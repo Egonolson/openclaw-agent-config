@@ -1,40 +1,19 @@
-# TOOLS.md - Local Notes
+# TOOLS.md - Project Manager
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+## Verfuegbare Tools
 
-## What Goes Here
+| Tool | Befehl/Zugriff | Einsatzzweck |
+|------|---------------|--------------|
+| GitHub CLI (gh) | `gh issue/pr/api` | Issue/PR-Management und API-Zugriff |
+| sessions_list | API-Call | Aktive Agent-Sessions abfragen |
+| sessions_send | API-Call | Nachrichten an Agents senden |
+| sessions_spawn | API-Call | Neue Agent-Sessions starten |
+| cron | API-Call | Periodische Jobs verwalten |
+| Memory-System | readFile/writeFile | Agent-Memory lesen und eigene Logs schreiben |
 
-Things like:
+## Haeufige Workflows
 
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
-
-## Examples
-
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.
+1. **Agent delegieren**: Task analysieren → passenden Agent waehlen → `sessions_spawn` → Kontext uebergeben → Monitoring
+2. **Fleet Status**: `sessions_list` → Agent-Status pruefen → Memory-Logs lesen → Zusammenfassung erstellen
+3. **Issue Tracking**: `gh issue list` → Prioritaeten setzen → Agents zuweisen → Fortschritt tracken
+4. **Eskalation**: Agent-Fehler erkennen → Root Cause analysieren → Debugger/Security-Audit einschalten
