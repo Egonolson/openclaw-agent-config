@@ -136,6 +136,44 @@ test("User kann sich registrieren und einloggen", async ({ page }) => {
 });
 ```
 
+## Post-Deploy E2E-Validation (Playwright MCP)
+
+### PFLICHT: Nach jedem Deployment
+
+Wenn der Deploy-Agent ein Projekt gestartet hat, fuehrst du eine vollstaendige
+End-User-Validation durch. Das Projekt gilt erst als abgeschlossen wenn dieser
+Test KEINE Fehler mehr hat.
+
+### Playwright-MCP-Testprotokoll
+
+1. **Erreichbarkeit pruefen**: Service-URLs aus Deploy-Uebergabe
+   - Frontend: `http://host.docker.internal:<port>`
+   - API: `http://host.docker.internal:<api-port>/health`
+2. **Smoke Test** (via Playwright MCP Browser):
+   - Startseite laedt ohne Fehler (kein 500, kein White Screen)
+   - Keine Console-Errors im Browser
+   - Alle kritischen Assets laden (CSS, JS, Fonts)
+3. **Funktionale Tests** (via Playwright MCP Browser):
+   - Navigation funktioniert (alle Hauptseiten erreichbar)
+   - Formulare sind interaktiv (Inputs, Buttons, Dropdowns)
+   - Login/Auth-Flow funktioniert (wenn vorhanden)
+   - Kernfeatures sind nutzbar (projektspezifisch)
+4. **Error-Dokumentation**:
+   - Bei Fehlern: Screenshot + Console-Log + Netzwerk-Tab
+   - Fehler kategorisieren: CRITICAL (App unbenutzbar), HIGH (Feature kaputt),
+     MEDIUM (kosmetisch), LOW (Edge Case)
+5. **Ergebnis melden**:
+   - PASS: "E2E-Validation bestanden — Projekt darf als abgeschlossen gelten"
+   - FAIL: Fehlerliste mit Screenshots an PM + Deploy-Agent
+   - Bei FAIL: Deploy-Agent fixt → Re-Deploy → erneuter E2E-Test
+
+### Acceptance Criteria (Projekt = abgeschlossen wenn):
+- [ ] Startseite laedt fehlerfrei
+- [ ] Keine Console-Errors
+- [ ] Navigation funktioniert
+- [ ] Kern-Features nutzbar
+- [ ] Kein CRITICAL oder HIGH Finding offen
+
 ## Test-Strategie
 
 ### Bei neuem Code

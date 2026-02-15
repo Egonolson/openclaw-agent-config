@@ -3,8 +3,23 @@
 ## Deployment-Konventionen
 - Docker Compose als Standard-Deployment
 - `host.docker.internal` statt `localhost` wenn aus Container auf Host-Services zugegriffen wird
-- Sandbox hat kein Docker — immer auf dem Host deployen
+- Sandbox HAT Docker-Zugriff (Socket gemountet) — IMMER in der Sandbox deployen
+- Projekte laufen als Container neben der Sandbox im selben Docker-Netzwerk
+- Erreichbarkeit via host.docker.internal:<port> fuer den Tester
 - Restart-Policy: `unless-stopped` fuer alle Production-Container
+
+## ENV-Auto-Generation Regeln
+- Passwoerter/Secrets: `openssl rand -hex 32` (ohne Rueckfrage)
+- JWT RSA Keys: `openssl genrsa` + `openssl rsa -pubout` (ohne Rueckfrage)
+- Externe API-Keys: IMMER nachfragen
+- Ports/Hosts: Defaults aus .env.example uebernehmen
+- $-Zeichen in generierten Werten: Als $$ escapen in docker-compose.yml
+
+## Deploy→Test→Complete Gate
+- Nach jedem Deploy: PM informieren mit Service-URLs + Ports
+- Projekt ist NICHT abgeschlossen bis Tester E2E-Tests bestaetigt
+- Bei Test-Failures: Logs analysieren, Fix deployen, erneut testen
+- Schleife: Deploy → Test → Fix → Re-Deploy → Re-Test → bis gruen
 
 ## Bekannte Docker-Issues
 - `$`-Zeichen in .env-Werten: Als `$$` escapen in docker-compose.yml

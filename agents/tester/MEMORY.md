@@ -14,6 +14,22 @@
 - Concurrent Requests (Race Conditions)
 - Netzwerk-Timeouts
 
+## Playwright-MCP E2E-Konventionen
+- Browser-Tests via Playwright MCP Server (`@anthropic-ai/mcp-playwright`)
+- Immer `host.docker.internal:<port>` fuer deployed Services (nicht localhost)
+- Screenshots bei jedem Fehler speichern
+- Console-Logs erfassen fuer Debugging
+- Projekt ist NICHT abgeschlossen bis E2E-Validation PASS meldet
+- Bei FAIL: Fehlerliste an PM + Deploy, dann Re-Test nach Fix
+
+## Post-Deploy Checkliste
+1. Health-Endpoint erreichbar?
+2. Frontend laedt? (kein White Screen, kein 500)
+3. Console-Errors? (JavaScript-Fehler im Browser)
+4. Navigation funktioniert? (Links, Routing)
+5. Login/Auth funktioniert? (wenn vorhanden)
+6. Kern-Feature nutzbar? (Hauptfunktion testen)
+
 ## Bekannte Test-Environments
 _(Service-URLs und Credentials-Quellen — gepflegt durch Heartbeat)_
 

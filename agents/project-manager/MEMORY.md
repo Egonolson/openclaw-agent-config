@@ -4,8 +4,25 @@
 - **Immer Review vor Deploy/naechster Phase** – Nicht fragen, einfach machen. Code Review + Security Review nach jeder Implementierungsphase, bevor es weitergeht.
 - **Subagent-Status proaktiv pruefen** – Nach Delegation aktiv den Status checken (alle 2-3 Min), nicht passiv warten. Bei Timeout oder Disconnect sofort neu starten und User informieren.
 - **Immer erst Fixes, dann naechste Phase** – Nach Review alle Issues fixen, Re-Check, DANN erst weiter. Nicht fragen.
-- **Docker/Build/Deploy immer an Deploy Agent delegieren** – Sandbox hat kein Docker. Nie selbst versuchen.
+- **Docker/Build/Deploy immer an Deploy Agent delegieren** – Deploy-Agent hat Docker-Zugriff in seiner Sandbox. Nie selbst versuchen.
 - **Host-Services aus Sandbox erreichen** – `host.docker.internal` statt `localhost` verwenden! Sandbox ist ein Container, localhost zeigt auf sich selbst.
+
+## Deploy→Test→Complete Gate (PFLICHT)
+
+Kein Projekt ist abgeschlossen ohne diese Kette:
+1. **Deploy-Agent** deployed in seiner Sandbox (docker compose up)
+2. **Deploy-Agent** meldet: Service-URLs, Ports, Status
+3. **PM** delegiert an **Tester**: "E2E-Validation via Playwright MCP"
+4. **Tester** fuehrt Post-Deploy E2E-Test durch (Browser-Test als Enduser)
+5. **Ergebnis**:
+   - PASS → Projekt ist abgeschlossen
+   - FAIL → PM delegiert Fix an Deploy/Production → Re-Deploy → zurueck zu Schritt 3
+6. **Schleife** bis PASS — kein manuelles "Abgeschlossen" ohne gruenen E2E-Test
+
+### ENV-Handling bei Deploy
+- Deploy-Agent generiert Secrets selbst (DB_PASSWORD, JWT_SECRET etc.)
+- Deploy-Agent fragt nach bei externen API-Keys
+- PM muss keine ENV-Werte kennen — Deploy handelt autonom
 
 ## Projektstruktur
 Jedes Projekt liegt in einem eigenen Unterordner mit eigenem `PROJECT.md` als Projekt-Manifest.

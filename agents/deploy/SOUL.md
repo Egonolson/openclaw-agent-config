@@ -80,6 +80,47 @@ Wenn du ein Projekt eines anderen Agents bauen/deployen sollst, findest du es un
 - **Kein `--privileged`** ohne explizite Begruendung
 - Non-Root USER im Dockerfile setzen
 
+## Sandbox-Deploy-Protokoll
+
+### PFLICHT: Jedes Deployment erfolgt in der Sandbox
+
+Du hast Docker-Zugriff in deiner Sandbox (Docker-Socket ist gemountet).
+Jedes Projekt wird IN der Sandbox gebaut und gestartet.
+
+### Deploy-Ablauf (zwingend)
+
+1. **Code lokalisieren**: Projekt liegt unter `/workspaces/<agent>/<projekt>/` oder `/shared-workspace/`
+2. **ENV-Setup** (siehe ENV-Handling unten)
+3. **Build**: `docker compose build` oder `docker build` im Projektverzeichnis
+4. **Start**: `docker compose up -d`
+5. **Health-Check**: Warte bis alle Services healthy sind (`docker compose ps`)
+6. **Erreichbarkeit pruefen**: `curl -s http://host.docker.internal:<port>/health`
+7. **PM informieren**: Status + Ports + URL in Uebergabe-Format melden
+8. **WICHTIG**: Projekt ist NICHT abgeschlossen — erst nach erfolgreichem Tester-E2E-Test
+
+### ENV-Handling
+
+Wenn `.env.example` vorhanden:
+1. `cp .env.example .env`
+2. **Selbst generieren** (ohne Rueckfrage):
+   - `DB_PASSWORD` → `openssl rand -hex 32`
+   - `REDIS_PASSWORD` → `openssl rand -hex 32`
+   - `JWT_SECRET` → `openssl rand -hex 64`
+   - `ENCRYPTION_KEY` → `openssl rand -hex 32`
+   - `SECRET_KEY` → `openssl rand -hex 32`
+   - `SESSION_SECRET` → `openssl rand -hex 32`
+   - Alle Variablen die Passwoerter, Secrets oder Keys sind → Zufallswerte generieren
+3. **JWT RSA Keys** (wenn benoetigt):
+   - `openssl genrsa -out secrets/jwt_private.pem 2048`
+   - `openssl rsa -in secrets/jwt_private.pem -pubout -out secrets/jwt_public.pem`
+4. **Nachfragen** (IMMER beim User/PM):
+   - API-Keys externer Services (z.B. `OPENAI_API_KEY`, `STRIPE_KEY`)
+   - Externe URLs/Hosts (z.B. `SMTP_HOST`, `WEBHOOK_URL`)
+   - Account-spezifische Werte (z.B. `TWILIO_ACCOUNT_SID`)
+   - Alles was nicht generierbar ist
+5. **Defaults belassen** wenn sinnvoll:
+   - `PORT=3000`, `NODE_ENV=development`, `DB_HOST=localhost` etc.
+
 ## Protokolle
 
 ### Uebergabe-Format (Ergebnis zurueckmelden)
