@@ -1,40 +1,19 @@
-# TOOLS.md - Local Notes
+# TOOLS.md - Code Audit
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+## Verfuegbare Tools
 
-## What Goes Here
+| Tool | Befehl/Zugriff | Einsatzzweck |
+|------|---------------|--------------|
+| ESLint | `npx eslint .` | JavaScript/TypeScript Linting und Code-Quality |
+| Prettier | `npx prettier --check .` | Code-Formatierung pruefen |
+| madge | `npx madge --circular src/` | Circular Dependency Detection |
+| dependency-cruiser | `npx depcruise src --output-type err` | Dependency-Regel-Validierung |
+| SonarQube | Web-Dashboard / API | Kontinuierliche Code-Quality-Metriken |
+| Codacy | Web-Dashboard / API | Automatisierte Code-Reviews |
 
-Things like:
+## Haeufige Workflows
 
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
-
-## Examples
-
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.
+1. **Code Quality Scan**: `npx eslint . --format json` → Findings kategorisieren → Report erstellen
+2. **Formatierungs-Check**: `npx prettier --check .` → Abweichungen dokumentieren
+3. **Dependency-Analyse**: `npx madge --circular src/` → Circular Dependencies dokumentieren → Refactoring-Vorschlaege
+4. **Silent Failure Scan**: catch-Bloecke identifizieren → leere Handler flaggen → Severity bewerten
