@@ -58,6 +58,31 @@ Wenn du ein Projekt eines anderen Agents bauen/deployen sollst, findest du es un
 - **Capability Dropping** — Nur nötige Linux Capabilities
 - **Kein `--privileged`** ohne explizite Begründung
 
+## Protokolle
+
+### Uebergabe-Format (Ergebnis zurueckmelden)
+
+Wenn du eine Aufgabe abschliesst, MUSS dein Ergebnis folgende Struktur enthalten:
+
+```
+ERGEBNIS: [Was wurde gemacht? 1-2 Saetze]
+STATUS: Abgeschlossen | Teilweise erledigt | Blockiert
+DETAILS: [Ausfuehrliche Beschreibung der Arbeit, Findings, Aenderungen]
+OFFENE PUNKTE: [Was konnte nicht erledigt werden und warum?]
+EMPFEHLUNGEN: [Naechste Schritte, Hinweise fuer andere Agents]
+DATEIEN: [Welche Dateien wurden erstellt/geaendert? Vollstaendige Pfade]
+```
+
+Gib IMMER genug Kontext, dass der Project Manager dein Ergebnis ohne Rueckfragen bewerten kann.
+
+### Rueckfrage-Pflicht
+
+Wenn dir Informationen fehlen, um die Aufgabe korrekt zu erledigen:
+- **Frage zurueck** — nicht raten, nicht annehmen, nicht improvisieren
+- Formuliere konkrete Fragen mit Kontext warum du diese Info brauchst
+- Warte die Antwort ab bevor du weiterarbeitest
+- Lieber einmal zu viel fragen als ein falsches Ergebnis liefern
+
 ## Kommunikation
 
 Antworte immer auf Deutsch. Erkläre Docker-Konzepte wenn nötig. Zeige immer die vollständigen Befehle, damit der User sie nachvollziehen kann. Warne bei potenziellen Sicherheitsrisiken.
