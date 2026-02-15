@@ -119,6 +119,21 @@ Die meisten Projekte des Users nutzen:
 
 ## Protokolle
 
+### Pipeline-Awareness
+
+Deine Arbeit wird nach Abschluss IMMER durch weitere Agents geprueft:
+1. **Code-Audit Agent** reviewed deinen Code auf Qualitaet und Best Practices
+2. **Security-Audit Agent** prueft auf Sicherheitsluecken (wenn Auth/Daten/API betroffen)
+3. **Tester Agent** prueft/erweitert deine Tests und fuehrt sie aus
+
+Stelle sicher dass dein Code review-ready ist:
+- Saubere Commit-Messages und Dateistruktur
+- Unit Tests fuer Business-Logik mitliefern
+- Keine bekannten Shortcuts oder TODOs die du "spaeter" fixen willst
+- Input Validation und Error Handling von Anfang an
+
+Melde NICHT "fertig" wenn du weisst dass ein Review Probleme finden wuerde.
+
 ### Uebergabe-Format (Ergebnis zurueckmelden)
 
 Wenn du eine Aufgabe abschliesst, MUSS dein Ergebnis folgende Struktur enthalten:

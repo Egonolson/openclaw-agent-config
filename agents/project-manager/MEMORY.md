@@ -7,6 +7,15 @@
 - **Docker/Build/Deploy immer an Deploy Agent delegieren** – Deploy-Agent hat Docker-Zugriff in seiner Sandbox. Nie selbst versuchen.
 - **Host-Services aus Sandbox erreichen** – `host.docker.internal` statt `localhost` verwenden! Sandbox ist ein Container, localhost zeigt auf sich selbst.
 
+## Feature-Request-Pipeline (IMMER einhalten)
+- JEDE Feature-Anfrage: Design → Implement → Code Review → Security Review → Test → Deploy → E2E
+- Code Review (code-audit) ist PFLICHT-GATE — kein Deploy ohne bestandenen Review
+- Security Review bei Auth/Daten/API — PFLICHT, nicht optional
+- Testing (tester) VOR Deploy — Unit + Integration muessen gruen sein
+- E2E-Test NACH Deploy — Playwright MCP Browser-Test
+- Bei "schnell einbauen" oder "mal eben": Trotzdem Pipeline durchlaufen!
+- Einzige Ausnahme: Rein kosmetische Aenderungen duerfen Security Review skippen
+
 ## Deploy→Test→Complete Gate (PFLICHT)
 
 Kein Projekt ist abgeschlossen ohne diese Kette:

@@ -123,6 +123,70 @@ Beispiel: "Baue ein User-Auth-System"
 6. → `deploy`: Docker-Setup → **PM Review** ✓
 7. → `debugger`: Smoke Test → **PM Review** ✓
 
+## Feature-Request-Pipeline (PFLICHT)
+
+### JEDE Feature-Anfrage durchlaeuft diese Kette — ohne Ausnahme
+
+Egal ob "schnell mal einbauen" oder grosse Features — diese Schritte sind PFLICHT.
+Du darfst Schritte NICHT ueberspringen, zusammenfassen oder abkuerzen.
+
+### Pipeline-Phasen
+
+#### Phase 1: Anforderung klären
+- Acceptance Criteria definieren BEVOR Code geschrieben wird
+- Was genau soll das Feature tun? Was NICHT?
+- Wo soll es hin? (welche Seite, welcher Bereich)
+- User informieren: "Baue Feature X mit folgenden Kriterien: ..."
+
+#### Phase 2: Design (wenn UI betroffen)
+- `designer` → UI/UX-Entwurf
+- PM Review des Design-Ergebnisses ✓
+
+#### Phase 3: Implementierung
+- `production` → Code schreiben (mit Unit Tests!)
+- PM Review des Code-Ergebnisses ✓
+- SCOPE-Pruefung: Wurde nur das gebaut was gefordert war?
+
+#### Phase 4: Code Review (PFLICHT-GATE)
+- `code-audit` → Code-Qualitaet, Best Practices, Architektur pruefen
+- Bei Findings >= HIGH: Zurueck an `production` zum Fixen → Re-Review
+- KEIN Weiter ohne bestandenen Code Review
+
+#### Phase 5: Security Review (PFLICHT-GATE bei Auth/Daten/API)
+- `security-audit` → OWASP, Input Validation, Auth-Checks
+- PFLICHT wenn: Login, Formulare, API-Endpoints, Datenbank, User-Daten betroffen
+- Optional wenn: Rein kosmetische Aenderung (CSS, Texte, Layout ohne Logik)
+- Bei Findings >= HIGH: Zurueck an `production` → Fix → Re-Review
+
+#### Phase 6: Testing (PFLICHT-GATE)
+- `tester` → Unit Tests + Integration Tests pruefen/erweitern
+- Muessen GRUEN sein bevor Deploy passiert
+- Bei Failures: Zurueck an `production` → Fix → Re-Test
+
+#### Phase 7: Deploy
+- `deploy` → In Sandbox deployen (docker compose up)
+- Deploy-Agent meldet Service-URLs + Ports
+
+#### Phase 8: E2E-Validation (PFLICHT-GATE)
+- `tester` → Post-Deploy Browser-Test via Playwright MCP
+- PASS → Feature ist abgeschlossen, User informieren
+- FAIL → Fix-Schleife (zurueck zu Phase 3 oder 7 je nach Fehler)
+
+### Abkuerzungen (EINZIGE erlaubte Vereinfachungen)
+
+| Situation | Erlaubte Abkuerzung |
+|-----------|-------------------|
+| Rein kosmetisch (CSS, Texte) | Security Review (Phase 5) optional |
+| Hotfix/Bugfix (1-5 Zeilen) | Design (Phase 2) ueberspringen, Rest bleibt Pflicht |
+| Prototyp/PoC (NICHT Production) | Nur Phase 1-3, KEIN Deploy in Production |
+
+### VERBOTEN
+
+- "Fertig" melden ohne Code Review + Test
+- Deploy ohne vorherigen Code Review
+- User fragen "soll ich direkt deployen?" ohne die Pipeline durchlaufen zu haben
+- Schritte ueberspringen weil "es ist ja nur ein kleines Feature"
+
 ## Kernprinzipien
 
 - **Klarheit über Komplexität**: Jede Aufgabe muss klar definiert und abgrenzbar sein.

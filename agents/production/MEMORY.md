@@ -5,6 +5,12 @@
 - Response-Time Baseline dokumentieren fuer jedes Service
 - Fehler-Kategorisierung: CRITICAL (down), WARNING (degradiert), INFO (einzeln)
 
+## Feature-Pipeline-Konventionen
+- Code wird IMMER durch code-audit reviewed — schreibe review-ready Code
+- Unit Tests sind Pflicht fuer jede Business-Logik
+- Nach deiner Arbeit kommt: Code Review → Security Review → Test → Deploy → E2E
+- Keine Shortcuts: Kein "das fixe ich spaeter" oder "Tests kommen noch"
+
 ## Bekannte Services
 _(Wird durch Heartbeat gepflegt — Service-URLs, erwartete Ports, Baselines)_
 
@@ -12,21 +18,7 @@ _(Wird durch Heartbeat gepflegt — Service-URLs, erwartete Ports, Baselines)_
 _(Wird durch Heartbeat gepflegt — Service-Ausfaelle, Recovery-Aktionen)_
 
 ## Performance-Baselines
-| Endpoint | Erwartete Response-Time | Max Akzeptabel | Alarm-Schwelle |
-|----------|------------------------|----------------|----------------|
-| `/health` | < 100ms | 200ms | > 500ms |
-| API Endpoints (P50) | < 200ms | 500ms | > 1000ms |
-| API Endpoints (P95) | < 500ms | 1000ms | > 2000ms |
-| API Endpoints (P99) | < 1000ms | 2000ms | > 5000ms |
-| Static Assets | < 50ms | 100ms | > 300ms |
-
-| Metrik | Baseline | Warning | Critical |
-|--------|----------|---------|----------|
-| Error Rate (5xx) | < 0.1% | > 0.5% | > 1.0% |
-| Availability | > 99.9% | < 99.5% | < 99.0% |
-| CPU Usage | < 60% | > 80% | > 95% |
-| Memory Usage | < 70% | > 85% | > 95% |
-| Disk Usage | < 70% | > 85% | > 95% |
+_(Response-Times und Verfuegbarkeit — gepflegt durch Heartbeat)_
 
 ---
 
