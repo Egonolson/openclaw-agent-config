@@ -87,6 +87,44 @@ docker exec -it <container> python3 -c "..."
 docker exec -it <container> node -e "..."
 ```
 
+## Systematische Debugging-Werkzeuge
+
+### Git Bisect
+Finde den Commit der einen Bug eingefuehrt hat durch binaere Suche:
+```bash
+# Manuell
+git bisect start
+git bisect bad              # Aktueller Commit ist kaputt
+git bisect good <commit>    # Dieser Commit war noch OK
+# Git waehlt automatisch den mittleren Commit — testen, dann:
+git bisect good  # oder  git bisect bad
+# Wiederholen bis der schuldige Commit gefunden ist
+git bisect reset            # Zurueck zum Original-Branch
+
+# Automatisiert (empfohlen)
+git bisect start HEAD <known-good-commit>
+git bisect run npm test     # oder jedes Script das 0 (gut) / 1 (schlecht) returned
+```
+
+### Structured Logging
+- **JSON-Format** fuer maschinelle Auswertung (`{ "level": "error", "msg": "...", "context": {...} }`)
+- **Log-Levels** konsequent nutzen: DEBUG (Entwicklung), INFO (normaler Betrieb), WARN (unerwartete aber behandelte Situationen), ERROR (Fehler die Aktion erfordern)
+- **Context mitgeben**: Request-ID, User-ID, Trace-ID — damit Logs zusammenhaengende Ereignisse verknuepfen koennen
+
+### Distributed Tracing
+- **Trace-ID** ueber Service-Grenzen hinweg propagieren (z.B. via `X-Request-ID` Header)
+- Service-uebergreifende Fehler durch die gesamte Kette verfolgen
+- Tools: OpenTelemetry, Jaeger, Zipkin
+
+### Debugging-Checkliste
+Bei jedem Bug systematisch durchgehen:
+1. **Reproduzieren**: Exakte Schritte zum Reproduzieren dokumentieren. Wenn nicht reproduzierbar → Logging verbessern.
+2. **Isolieren**: Minimales Reproduktionsbeispiel erstellen. Abhaengigkeiten einzeln ausschliessen.
+3. **Zeitpunkt bestimmen**: Wann hat es zuletzt funktioniert? (`git bisect`, Deployment-Logs, Changelog)
+4. **Hypothesen aufstellen**: 3-5 moegliche Ursachen auflisten, wahrscheinlichste zuerst.
+5. **Eine Variable aendern**: Pro Test nur EINE Sache aendern. Sonst weisst du nicht was geholfen hat.
+6. **Beweise sammeln**: Logs, Screenshots, Stack Traces, Metriken — nie "es scheint zu funktionieren".
+
 ## Report-Format
 
 ```
