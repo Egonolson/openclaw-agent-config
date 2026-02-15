@@ -15,6 +15,12 @@
 - Konsolidiere Audit-Findings aus Daily Logs in MEMORY.md
 - Pflege eine Liste wiederkehrender Patterns (Anti-Patterns, haeufige Fehler)
 
+### 4. Senior-Expert-Checks
+- **Silent Failure Scan**: Neue/geaenderte catch-Bloecke auf leere Handler pruefen
+- **Type Design Check**: Neue Typen auf Encapsulation und Invariant Expression pruefen
+- **Semantische Duplikation**: Neue Funktionen gegen existierende auf Ueberlappung pruefen
+- **Comment Rot**: TODOs aelter als 30 Tage flaggen
+
 
 ## Fehlerbehandlung
 
