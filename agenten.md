@@ -16,11 +16,10 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 6. [Code Reviewer](#6-code-reviewer) — Code-Qualitaet und Reviews
 7. [System Architect](#7-system-architect) — Architektur-Entscheidungen
 8. [QA & Test Engineer](#8-qa--test-engineer) — Tests mit Playwright-Sandbox
-9. [UI/UX Designer](#9-uiux-designer) — Interface-Design (mit Tool-Profil)
+9. [UI/UX Designer](#9-uiux-designer) — Interface-Design
 10. [Debugger](#10-debugger) — Fehlersuche und Troubleshooting
 11. [Tool-Profile-Referenz](#tool-profile-referenz) — Die 4 verfuegbaren Profile
 12. [Skill-Zuordnungs-Rationale](#skill-zuordnungs-rationale) — Warum welcher Agent welche Skills bekommt
-13. [Designer-Fix: EROFS-Problem und Loesung](#designer-fix-erofs-problem-und-loesung)
 
 ---
 
@@ -36,7 +35,7 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 | Code Reviewer | `code-audit` | `full` (Standard) | `github`, `oracle`, `session-logs` | Nein |
 | System Architect | `architect` | `full` (Standard) | `github`, `oracle`, `mcporter`, `session-logs` | Nein |
 | QA & Test Engineer | `tester` | `full` (Standard) | `github`, `tmux`, `coding-agent`, `mcporter`, `session-logs` | Ja |
-| **UI/UX Designer** | `designer` | **`minimal` + alsoAllow** | `nano-banana-pro`, `openai-image-gen`, `gifgrep`, `peekaboo`, `canvas`, `summarize`, `github` | **Ja (rw)** |
+| UI/UX Designer | `designer` | `minimal` + alsoAllow | `nano-banana-pro`, `openai-image-gen`, `gifgrep`, `peekaboo`, `canvas`, `summarize`, `github` | Ja (rw) |
 | Debugger | `debugger` | `full` (Standard) | `github`, `tmux`, `coding-agent`, `session-logs`, `mcporter` | Nein |
 
 ---
@@ -446,10 +445,9 @@ Die Datei `~/.openclaw/config/sandbox-tester/mcporter.json` wird per Bind-Mount 
 | ID | `designer` |
 | Avatar | 🎨 |
 | Mentions | `@designer` `@design` `@ui` `@ux` |
-| Sandbox | **Ja** — `workspaceAccess: "rw"` |
-| Tool-Profil | **`minimal` + `alsoAllow`** (eingeschraenkt) |
+| Sandbox | `workspaceAccess: "rw"` |
+| Tool-Profil | `minimal` + `alsoAllow` (fs, web, image, sessions) |
 | Skills | `nano-banana-pro`, `openai-image-gen`, `gifgrep`, `peekaboo`, `canvas`, `summarize`, `github` |
-| Besonderheit | Kein `exec`-Tool, kein `cron`, kein `gateway` — nur Design-relevante Tools |
 
 ### Konfiguration
 
@@ -476,39 +474,9 @@ Die Datei `~/.openclaw/config/sandbox-tester/mcporter.json` wird per Bind-Mount 
 }
 ```
 
-### Tool-Profil erklaert
-
-Der Designer nutzt ein **eingeschraenktes Tool-Profil** statt des Standard-`full`-Profils:
-
-| Komponente | Tools | Erklaerung |
-|------------|-------|------------|
-| **Basis: `minimal`** | `session_status` | Nur Status-Abfrage |
-| **+ `group:fs`** | `read`, `write`, `edit`, `apply_patch` | Design-Plaene und -Dokumente erstellen |
-| **+ `group:web`** | `web_search`, `web_fetch` | Design-Recherche, Inspiration |
-| **+ `image`** | `image` | Bildgenerierung (DALL-E etc.) |
-| **+ `group:sessions`** | `sessions_list`, `sessions_history`, `sessions_send`, `sessions_spawn`, `session_status` | Subagent-Kommunikation |
-
-**Bewusst NICHT enthalten:**
-
-| Tool/Gruppe | Grund |
-|-------------|-------|
-| `exec` / `group:runtime` | Designer soll keinen Code ausfuehren |
-| `cron` / `group:automation` | Keine Automatisierungen noetig |
-| `gateway` | Kein Gateway-Zugriff noetig |
-| `message` / `group:messaging` | Kommunikation laeuft ueber Sessions |
-| `browser` / `canvas` (Tool) | Nicht verwechseln mit dem `canvas` Skill — das Tool ist fuer Browser-Automation |
-
-### Warum `alsoAllow` statt `allow`?
-
-`allow` **ersetzt** die Profil-Allowlist komplett. `alsoAllow` wird **additiv** gemerged:
-- Profil `minimal` liefert: `["session_status"]`
-- `alsoAllow` fuegt hinzu: `["group:fs", "group:web", "image", "group:sessions"]`
-- Ergebnis: Alle kombiniert, ohne `session_status` manuell wiederholen zu muessen
-
 ### Was muss manuell konfiguriert werden?
 
 - Workspace erstellen: `mkdir -p ~/.openclaw/workspaces/designer`
-- Die `tools` und `sandbox` Config ist bereits in `openclaw.json` definiert
 
 ---
 
@@ -636,48 +604,6 @@ Ohne `skills`-Feld in der Agent-Config bekommt jeder Agent **alle** installierte
 // In types.agents.ts
 skills?: string[];  // omit = all skills; empty [] = none; array = allowlist
 ```
-
----
-
-## Designer-Fix: EROFS-Problem und Loesung
-
-### Problem
-
-Der Designer-Agent lief zuvor mit dem Standard-Toolset (`full` Profil = alle Tools) und ohne Sandbox-Config. Wenn er in einer Sandbox ausgefuehrt wurde:
-
-1. Er versuchte `exec` zu nutzen (z.B. `npm install`, `node script.js`)
-2. Das Root-Dateisystem der Sandbox war read-only (`readOnlyRoot: true` Standard)
-3. Ergebnis: **EROFS (Read-Only File System)** Fehler
-
-### Ursache
-
-- Kein `tools`-Block definiert → Agent bekommt `full` Profil → alle Tools inkl. `exec`
-- Kein `sandbox.workspaceAccess` → Standard `"none"` → kein Schreibzugriff im Workspace
-- Keine `skills`-Allowlist → Agent sieht `coding-agent`, `deploy`-Skills → wird zum "Schreiben" animiert
-
-### Loesung
-
-```json
-{
-  "tools": {
-    "profile": "minimal",
-    "alsoAllow": ["group:fs", "group:web", "image", "group:sessions"]
-  },
-  "sandbox": {
-    "workspaceAccess": "rw"
-  },
-  "skills": ["nano-banana-pro", "openai-image-gen", "gifgrep", "peekaboo", "canvas", "summarize", "github"]
-}
-```
-
-**Was sich aendert:**
-
-| Vorher | Nachher |
-|--------|---------|
-| Alle 49+ Skills sichtbar | 7 Design-relevante Skills |
-| Alle Tools verfuegbar (inkl. `exec`) | Nur `session_status` + fs/web/image/sessions |
-| Kein Workspace-Schreibzugriff | `workspaceAccess: "rw"` — kann Design-Plaene speichern |
-| EROFS bei Schreibversuchen | Schreibt nur in Workspace, kein `exec` verfuegbar |
 
 ---
 
