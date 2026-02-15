@@ -136,6 +136,9 @@ Du darfst Schritte NICHT ueberspringen, zusammenfassen oder abkuerzen.
 - Acceptance Criteria definieren BEVOR Code geschrieben wird
 - Was genau soll das Feature tun? Was NICHT?
 - Wo soll es hin? (welche Seite, welcher Bereich)
+- Bei Apps mit Login: "Session bleibt nach Browser-Neustart erhalten" als Acceptance Criterion
+- Bei Apps mit Funktionen/DB: "Strukturiertes Error Logging vorhanden" als Acceptance Criterion
+- Bei UI-Features: "Mobile-responsive mit Bottom Nav/Sheets" als Acceptance Criterion
 - User informieren: "Baue Feature X mit folgenden Kriterien: ..."
 
 #### Phase 2: Design (wenn UI betroffen)
@@ -167,10 +170,21 @@ Du darfst Schritte NICHT ueberspringen, zusammenfassen oder abkuerzen.
 - `deploy` → In Sandbox deployen (docker compose up)
 - Deploy-Agent meldet Service-URLs + Ports
 
-#### Phase 8: E2E-Validation (PFLICHT-GATE)
-- `tester` → Post-Deploy Browser-Test via Playwright MCP
-- PASS → Feature ist abgeschlossen, User informieren
+#### Phase 8a: E2E-Validation (PFLICHT-GATE)
+- `tester` → Post-Deploy funktionaler Browser-Test via Playwright MCP
+- Prueft: App laedt, Features funktionieren, keine Console-Errors
+- PASS → Weiter zu Phase 8b
 - FAIL → Fix-Schleife (zurueck zu Phase 3 oder 7 je nach Fehler)
+
+#### Phase 8b: UX/Usability + Mobile + Session + Error Review (PFLICHT-GATE)
+- `tester` → Enduser-Perspektive: Verstaendlichkeit, Bedienbarkeit, Mobile-Responsiveness
+- Inkl. Mobile-Viewport-Test (375x812): Bottom Nav, Bottom Sheets, Icon Buttons, Touch-Targets
+- Inkl. Session-Persistenz-Test (bei Login-Apps): Tab schliessen + oeffnen = noch eingeloggt?
+- Inkl. Error-Handling-Test (bei Apps mit Funktionen/DB): Toasts, Error Boundary, Structured Logs
+- PFLICHT wenn: UI-Aenderungen, Login, Business-Logik, DB
+- UX-PASS → Feature ist abgeschlossen, User informieren
+- UX-FAIL → Zurueck an `designer` oder `production` je nach Finding
+- UX-MINOR → Empfehlungen dokumentieren, kein Blocker
 
 ### Abkuerzungen (EINZIGE erlaubte Vereinfachungen)
 

@@ -30,6 +30,22 @@
 5. Login/Auth funktioniert? (wenn vorhanden)
 6. Kern-Feature nutzbar? (Hauptfunktion testen)
 
+## UX/Usability + Mobile + Session + Error Checkliste
+- NACH E2E-Validation: Perspektivwechsel zum nicht-technischen Enduser
+- 5-Sekunden-Test: Ist sofort klar was das Feature tut?
+- Labels/Texte selbsterklaerend? Keine Fachbegriffe?
+- Workflow logisch? Keine Sackgassen? Feedback nach Aktionen?
+- **Mobile-Check (375x812 Viewport):**
+  - Bottom Nav sichtbar? Bottom Sheets statt Modals? Icon Buttons? Touch-Targets 44px?
+  - Single Column? Kein Overflow? Text 16px+? Safe Area Insets?
+- **Session-Check (bei Login-Apps):**
+  - Tab schliessen + neu oeffnen = noch eingeloggt? Kein Flicker beim Reload?
+  - "Angemeldet bleiben"? Sanfter Session-Ablauf? Return-URL nach Re-Login?
+- **Error-Check (bei Apps mit Funktionen/DB):**
+  - API-Fehler als Toast? Error Boundary statt White Screen? Inline-Formular-Fehler?
+  - Structured Logs mit Correlation ID in Console?
+- Rating: UX-PASS (weiter) | UX-MINOR (Empfehlungen) | UX-FAIL (zurueck an Designer/Production)
+
 ## Bekannte Test-Environments
 _(Service-URLs und Credentials-Quellen — gepflegt durch Heartbeat)_
 

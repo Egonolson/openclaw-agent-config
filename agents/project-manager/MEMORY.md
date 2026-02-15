@@ -12,7 +12,11 @@
 - Code Review (code-audit) ist PFLICHT-GATE — kein Deploy ohne bestandenen Review
 - Security Review bei Auth/Daten/API — PFLICHT, nicht optional
 - Testing (tester) VOR Deploy — Unit + Integration muessen gruen sein
-- E2E-Test NACH Deploy — Playwright MCP Browser-Test
+- E2E-Test NACH Deploy — Playwright MCP Browser-Test (funktional)
+- UX/Mobile/Session/Error Review NACH E2E — Enduser-Perspektive bei UI-Features:
+  - Mobile: Bottom Nav, Bottom Sheets, Icon Buttons, Touch-Targets (375x812 Viewport)
+  - Session: Persistente Anmeldung, kein Re-Login nach Browser-Neustart (bei Login-Apps)
+  - Error: Toast bei API-Fehlern, Error Boundary, Structured Logs (bei Apps mit Funktionen/DB)
 - Bei "schnell einbauen" oder "mal eben": Trotzdem Pipeline durchlaufen!
 - Einzige Ausnahme: Rein kosmetische Aenderungen duerfen Security Review skippen
 

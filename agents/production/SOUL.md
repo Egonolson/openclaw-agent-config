@@ -134,6 +134,63 @@ Stelle sicher dass dein Code review-ready ist:
 
 Melde NICHT "fertig" wenn du weisst dass ein Review Probleme finden wuerde.
 
+### Session Management (PFLICHT bei Apps mit Anmeldung)
+
+Jede App mit User-Anmeldung MUSS persistente Sessions implementieren:
+
+#### Token-Strategie
+- **Access Token**: Kurzlebig (15 Minuten), im Memory (nicht localStorage)
+- **Refresh Token**: Langlebig (7 Tage default, 30 Tage bei "Angemeldet bleiben")
+- **Refresh Token Rotation**: Bei jedem Refresh wird ein neues Token-Paar ausgestellt, altes invalidiert
+- **HTTP-Only Cookies** fuer Refresh Tokens (nicht in localStorage — XSS-Schutz)
+- **Supabase**: Nutze `supabase.auth.onAuthStateChange()` — Supabase handelt Token-Refresh automatisch
+
+#### Session-Lifecycle
+- **Auto-Refresh**: Access Token wird automatisch vor Ablauf erneuert (kein manueller Re-Login)
+- **Graceful Expiry**: Bei abgelaufenem Refresh Token → Sanftes Redirect zum Login mit Return-URL
+- **Session-Invalidierung**: Bei Passwort-Aenderung ALLE Sessions invalidieren
+- **Multi-Device**: Sessions-Tabelle fuehrbar, einzelne Sessions beendbar
+
+#### Supabase-spezifisch
+- `persistSession: true` in Supabase-Client-Config (default, nicht deaktivieren!)
+- Session wird automatisch im localStorage gespeichert
+- `onAuthStateChange` Listener im Root-Component fuer Token-Refresh
+- Bei Custom-Backend: Refresh-Endpoint + HTTP-Only Cookie implementieren
+
+### Error Log Management (PFLICHT bei Apps mit Funktionen/DB)
+
+Jede App mit Business-Logik oder Datenbank-Abfragen MUSS strukturiertes Error Logging haben:
+
+#### Frontend Error Handling
+- **React Error Boundary**: Global (`ErrorBoundary` um `<App />`) + Feature-spezifisch
+  - Zeigt User-freundliche Fehlermeldung mit Retry-Button
+  - Loggt Error + Stack Trace + Component Tree an Backend
+- **API Error Handler**: Zentraler Interceptor (Axios/Fetch Wrapper)
+  - Loggt: Endpoint, Status Code, Response Body, Request Duration
+  - Zeigt User: Toast mit verstaendlicher Meldung ("Konnte nicht speichern. Bitte erneut versuchen.")
+- **Unhandled Promise Rejections**: Global abfangen (`window.addEventListener('unhandledrejection')`)
+
+#### Backend Error Handling
+- **Structured JSON Logging**: Jeder Log-Eintrag hat: `timestamp`, `level`, `message`, `correlationId`, `userId`, `endpoint`, `stack`
+- **Severity Levels**:
+  - `FATAL`: App-Crash, Service nicht mehr verfuegbar → sofortige Alarmierung
+  - `ERROR`: Feature kaputt, Request fehlgeschlagen → loggen + User informieren
+  - `WARN`: Degradiert (langsame Query, Retry erfolgreich) → loggen
+  - `INFO`: Erwartete Events (Login, Logout, Feature genutzt) → loggen
+- **Correlation ID**: Generiere UUID pro Request, sende als `X-Correlation-ID` Header durch alle Services
+- **Keine sensiblen Daten in Logs**: Kein Passwort, kein Token, kein PII — nur User-ID und Session-ID
+
+#### Datenbank-Error-Handling
+- **Query Timeouts**: Konfiguriere max. Query-Laufzeit (5s default)
+- **Connection Pool Exhaustion**: Loggen + graceful Fehlermeldung (nicht App-Crash)
+- **Migration Failures**: Loggen + sofortiger Rollback + PM informieren
+- **Supabase-spezifisch**: RLS-Fehler (403) gesondert behandeln — ist kein Server-Error sondern Berechtigungsfehler
+
+#### Log-Destinationen
+- **Development**: Console + Datei (`logs/app.log`)
+- **Production**: Structured JSON nach stdout (Container-Logs) + optional externe Dienste
+- **Error-Aggregation**: Empfohlen: Sentry, LogRocket oder eigener `/admin/errors` Endpoint
+
 ### Uebergabe-Format (Ergebnis zurueckmelden)
 
 Wenn du eine Aufgabe abschliesst, MUSS dein Ergebnis folgende Struktur enthalten:

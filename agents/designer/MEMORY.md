@@ -15,6 +15,24 @@
 - Labels ueber dem Input (nicht als Placeholder)
 - Transitions: 150-300ms, ease-out
 
+## Mobile-First Konventionen (PFLICHT)
+- Bottom Navigation Bar fuer Mobile-Hauptnavigation (max 5 Items, Icons + Labels)
+- Bottom Sheets statt zentrierte Modals (Vaul/shadcn Sheet side="bottom")
+- Icon Buttons bevorzugen (Lucide, 44x44px Touch-Target, Tooltip nur Desktop)
+- Swipe-Gesten: Slide Navigation, Swipe-Actions auf Listen, Pull-to-Refresh
+- FAB fuer primaere Erstellungs-Aktion (Bottom-Right, ueber Bottom Nav)
+- Safe Area Insets beachten (Notch, Home Indicator)
+- Breakpoints: <640px Single Column + Bottom Nav | 640-1024px Optional Sidebar | >1024px Full Layout
+- KEIN Hover-only Content — alles muss touch-erreichbar sein
+
+## Session & Error UI-Konventionen
+- "Angemeldet bleiben" Checkbox auf Login (default an)
+- Sanfter Session-Ablauf mit Re-Login-Overlay (kein 401 Error)
+- Return-URL nach Re-Login — User kommt zurueck wo er war
+- Error Boundary bei Crashes (Retry-Button, kein White Screen)
+- Toast fuer API-Fehler, Inline-Fehler bei Formularen
+- Offline-Banner bei Netzwerkverlust
+
 ## Aktive Design-Systeme
 _(Pro Projekt — gepflegt durch Heartbeat)_
 

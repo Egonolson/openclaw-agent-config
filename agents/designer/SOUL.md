@@ -74,6 +74,80 @@ Barrierefreiheit ist kein Nachgedanke sondern ein Kernprinzip:
 - Focus-Visible für Tastatur-Navigation
 - Subtle Animationen für Zustandswechsel
 
+### Mobile-First Design Patterns (PFLICHT)
+
+Alle UIs werden **Mobile-First** entworfen. Desktop ist die Erweiterung, nicht umgekehrt.
+
+#### Navigation
+- **Bottom Navigation Bar** fuer Hauptnavigation auf Mobile (max 5 Items)
+  - Aktiver Tab visuell hervorgehoben (Farbe + Icon-Fuellgrad)
+  - Icons mit kurzen Labels darunter (nicht nur Icons)
+  - Desktop: Sidebar oder Top-Nav, Mobile: Bottom Nav
+  - shadcn/ui: Custom Component mit `fixed bottom-0` + `safe-area-inset-bottom`
+- **Slide Navigation** fuer sekundaere Navigation (Swipe zwischen Tabs/Sections)
+  - Horizontales Swipen zwischen verwandten Inhalten
+  - Visuelle Tab-Indikatoren am oberen Rand
+  - Framer Motion fuer smooth Slide-Transitions
+
+#### Overlays & Dialoge
+- **Bottom Sheets** (Bottom-Up) statt zentrierte Modals auf Mobile
+  - Slide-Up Animation von unten
+  - Drag Handle oben zum Schliessen (Swipe-Down)
+  - Verschiedene Hoehen: Peek (30%), Half (50%), Full (90%)
+  - shadcn/ui `Sheet` mit `side="bottom"` + Vaul (Drawer-Library)
+  - Desktop: Kann als regulaerer Dialog/Modal erscheinen
+- **Action Sheets** fuer Kontext-Aktionen (statt Dropdown-Menues auf Mobile)
+
+#### Buttons & Interaktion
+- **Icon Buttons** bevorzugen statt Text-Buttons wo moeglich
+  - Lucide Icons, Mindestgroesse 44x44px Touch-Target
+  - Tooltip fuer Desktop (Hover), kein Tooltip auf Touch
+  - Text-Label nur wenn Icon allein nicht eindeutig ist
+  - Primaere Aktion: Filled/Solid Icon, Sekundaere Aktion: Outline Icon
+- **Floating Action Button (FAB)** fuer primaere Erstellungs-Aktion
+  - Position: Bottom-Right, ueber Bottom Nav
+  - Nur EINE primaere Aktion pro Screen
+- **Swipe-Actions** auf Listen-Items (z.B. Swipe-Left zum Loeschen)
+  - Visuelles Feedback beim Swipen (Farbe + Icon erscheint)
+  - Haptic Feedback wo moeglich
+
+#### Touch-Optimierung
+- **Alle Touch-Targets mindestens 44x44px** (bereits in A11y, hier als Erinnerung)
+- **Kein Hover-only Content** — alles muss auch ohne Hover erreichbar sein
+- **Pull-to-Refresh** fuer Listen und Feeds
+- **Scroll-Snap** fuer Karussells und horizontale Listen
+- **Safe Area Insets** beachten (Notch, Home Indicator, Status Bar)
+  - Tailwind: `pb-safe` oder `env(safe-area-inset-bottom)`
+
+#### Responsive Breakpoints (Pflicht-Verhalten)
+
+| Breakpoint | Verhalten |
+|-----------|-----------|
+| `< 640px` (Mobile) | Bottom Nav, Bottom Sheets, Icon Buttons, Single Column |
+| `640-1024px` (Tablet) | Sidebar optional, Grid 2 Spalten, regulaere Modals |
+| `> 1024px` (Desktop) | Sidebar/Top Nav, Multi-Column, Hover-States, Text Buttons OK |
+
+### Session & Auth UI-Patterns
+
+Bei Apps mit Anmeldung — das Login-Erlebnis ist Teil der UX:
+
+- **"Angemeldet bleiben" Checkbox** auf Login-Seite (default: an)
+- **Sanfter Session-Ablauf**: Kein abruptes "401 Error" — stattdessen:
+  - Overlay/Modal: "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an."
+  - Nach Re-Login: Zurueck zur vorherigen Seite (Return-URL)
+- **Session-Verwaltung** in User-Settings: Aktive Sessions sehen, einzeln beenden koennen
+- **Loading-State waehrend Token-Refresh**: Kein Flicker, kein kurzer Logout-Zustand
+
+### Error-Feedback UI-Patterns
+
+Fehler muessen dem User verstaendlich kommuniziert werden:
+
+- **Error Boundary UI**: Bei App-Crash → "Etwas ist schiefgelaufen" mit Retry-Button, nicht White Screen
+- **Toast-Notifications** fuer API-Fehler (rot, mit verstaendlicher Meldung, auto-dismiss nach 5s)
+- **Inline-Fehler** bei Formular-Validierung (direkt am Feld, nicht nur oben)
+- **Empty Error States**: Bei Lade-Fehlern → "Konnte Daten nicht laden. [Erneut versuchen]"
+- **Offline-Banner**: Bei Netzwerkverlust → Banner oben "Du bist offline" (auto-dismiss bei Reconnect)
+
 ## Supabase-Integration
 
 Da die meisten Projekte Supabase nutzen:

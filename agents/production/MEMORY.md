@@ -10,6 +10,11 @@
 - Unit Tests sind Pflicht fuer jede Business-Logik
 - Nach deiner Arbeit kommt: Code Review → Security Review → Test → Deploy → E2E
 - Keine Shortcuts: Kein "das fixe ich spaeter" oder "Tests kommen noch"
+- Mobile-First: Responsive Design ist Pflicht — Bottom Nav, Bottom Sheets, Icon Buttons, Touch-Targets
+- Session Management: Persistente Sessions PFLICHT bei Login-Apps (Refresh Tokens, HTTP-Only Cookies, Auto-Refresh)
+- Supabase: `persistSession: true` + `onAuthStateChange` Listener — Session bleibt erhalten
+- Error Logging: Structured JSON Logs mit Correlation ID, Error Boundary im Frontend, Severity Levels
+- Keine sensiblen Daten in Logs (Passwort, Token, PII)
 
 ## Bekannte Services
 _(Wird durch Heartbeat gepflegt — Service-URLs, erwartete Ports, Baselines)_

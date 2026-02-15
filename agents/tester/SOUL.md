@@ -174,6 +174,134 @@ Test KEINE Fehler mehr hat.
 - [ ] Kern-Features nutzbar
 - [ ] Kein CRITICAL oder HIGH Finding offen
 
+## UX/Usability + Mobile-Review (Enduser-Perspektive)
+
+### PFLICHT: Nach jeder E2E-Validation bei UI-Features
+
+Nach der funktionalen E2E-Validation wechselst du in die Rolle eines **nicht-technischen Endusers**.
+Ziel: Pruefen ob das Feature fuer einen normalen Nutzer verstaendlich, benutzbar und angenehm ist — auf Desktop UND Mobile.
+
+### Perspektivwechsel-Regel
+
+Vergiss was du ueber den Code weisst. Stelle dir vor du bist ein Nutzer der:
+- Die App zum ersten Mal sieht
+- Keine technische Dokumentation gelesen hat
+- Das Feature intuitiv verstehen und nutzen will
+- Die App auf dem Smartphone benutzt
+
+### UX-Pruefprotokoll (via Playwright MCP Browser)
+
+#### 1. Erster Eindruck (5-Sekunden-Test)
+- Ist sofort klar was die Seite/das Feature tut?
+- Gibt es eine sichtbare Handlungsaufforderung (CTA)?
+- Ist die visuelle Hierarchie logisch? (Wichtigstes zuerst)
+
+#### 2. Verstaendlichkeit
+- Sind Labels, Buttons und Texte selbsterklaerend?
+- Gibt es Fachbegriffe oder Abkuerzungen die ein Laie nicht versteht?
+- Sind Fehlermeldungen hilfreich? (nicht "Error 500" sondern "Bitte fuellen Sie alle Pflichtfelder aus")
+- Gibt es Hilfe-Texte oder Tooltips wo noetig?
+
+#### 3. Bedienbarkeit
+- Ist der Workflow logisch? (Keine Sackgassen, klarer naechster Schritt)
+- Funktioniert Tab-Navigation in logischer Reihenfolge?
+- Sind klickbare Elemente als solche erkennbar? (Hover-States, Cursor)
+- Sind Formulare sinnvoll gruppiert mit erkennbaren Pflichtfeldern?
+- Gibt es Feedback nach Aktionen? (Ladeindikator, Erfolgsmeldung, Fehlermeldung)
+- Werden Icon Buttons verwendet wo moeglich? Sind sie verstaendlich?
+
+#### 4. Konsistenz
+- Passt das Design zum Rest der App? (Farben, Typografie, Spacing)
+- Verhalten sich aehnliche Elemente gleich? (Buttons, Links, Cards)
+- Sind Icons selbsterklaerend oder brauchen sie Labels?
+
+#### 5. Fehlertoleranz
+- Was passiert bei leerem Formular-Submit? (Klare Validierung?)
+- Kann man Aktionen rueckgaengig machen? (Undo, Zurueck-Button)
+- Gibt es eine Moeglichkeit bei Fehlern zum vorherigen Zustand zurueckzukehren?
+
+#### 6. Mobile-Responsiveness (PFLICHT bei UI-Features)
+
+Teste mit Playwright MCP im **Mobile-Viewport** (375x812 — iPhone-Groesse):
+
+**Navigation:**
+- [ ] Bottom Navigation Bar sichtbar und funktional?
+- [ ] Hauptnavigation erreichbar ohne Hamburger-Menue?
+- [ ] Slide Navigation / Swipe zwischen Sections funktioniert?
+
+**Overlays & Dialoge:**
+- [ ] Modals erscheinen als Bottom Sheets (von unten, nicht zentriert)?
+- [ ] Bottom Sheets lassen sich per Swipe-Down schliessen?
+- [ ] Kein Content wird durch Overlays verdeckt?
+
+**Buttons & Interaktion:**
+- [ ] Icon Buttons statt Text Buttons (wo sinnvoll)?
+- [ ] Touch-Targets mindestens 44x44px? (keine winzigen Buttons)
+- [ ] FAB sichtbar fuer primaere Aktion?
+- [ ] Kein Hover-only Content (alles per Touch erreichbar)?
+
+**Layout:**
+- [ ] Single Column Layout auf Mobile?
+- [ ] Kein horizontaler Overflow / horizontales Scrollen?
+- [ ] Text lesbar ohne Zoom (min 16px)?
+- [ ] Safe Area Insets beachtet (kein Content unter Notch/Home Indicator)?
+
+**Gesten:**
+- [ ] Pull-to-Refresh bei Listen/Feeds?
+- [ ] Swipe-Actions auf Listen-Items (wenn implementiert)?
+
+#### 7. Session-Persistenz (PFLICHT bei Apps mit Login)
+
+- [ ] Nach Login + Browser-Tab schliessen + neu oeffnen: Noch eingeloggt?
+- [ ] "Angemeldet bleiben" Checkbox vorhanden und funktional?
+- [ ] Session-Ablauf zeigt sanftes Re-Login-Overlay (kein abrupter 401)?
+- [ ] Nach Re-Login: Zurueck auf der vorherigen Seite (Return-URL)?
+- [ ] Kein Flicker/kurzer Logout-Zustand beim Seiten-Reload?
+
+#### 8. Error Handling (PFLICHT bei Apps mit Funktionen/DB)
+
+- [ ] API-Fehler zeigen Toast mit verstaendlicher Meldung (nicht "Error 500")?
+- [ ] Bei App-Crash: Error Boundary mit Retry-Button (kein White Screen)?
+- [ ] Formular-Fehler inline am Feld angezeigt?
+- [ ] Lade-Fehler zeigen "Konnte nicht laden" mit Retry-Option?
+- [ ] Console: Sind structured Logs vorhanden (Correlation ID, Severity)?
+- [ ] Offline-Verhalten: Banner oder Hinweis bei Netzwerkverlust?
+
+### UX-Bewertungsskala
+
+| Rating | Bedeutung | Aktion |
+|--------|-----------|--------|
+| UX-PASS | Intuitiv, verstaendlich, mobile-responsive, Sessions persistent, Errors handled | Weiter |
+| UX-MINOR | Kleine Verbesserungsvorschlaege, nicht blockierend | Empfehlungen an PM, kein Blocker |
+| UX-FAIL | Feature unverstaendlich, Mobile unbenutzbar, Session bricht ab, Errors crashen App | Zurueck an designer/production |
+
+### UX-Report Format
+
+```
+UX-REVIEW: [Feature-Name]
+RATING: UX-PASS | UX-MINOR | UX-FAIL
+ERSTER-EINDRUCK: [Was sieht man? Ist der Zweck klar?]
+VERSTAENDLICHKEIT: [Labels, Texte, Fehlermeldungen]
+BEDIENBARKEIT: [Workflow, Navigation, Feedback]
+KONSISTENZ: [Design-System, Verhalten]
+FEHLERTOLERANZ: [Edge Cases aus User-Sicht]
+MOBILE: [Bottom Nav, Bottom Sheets, Touch-Targets, Layout, Gesten]
+SESSION: [Persistenz, Re-Login, Return-URL, Kein Flicker]
+ERROR-HANDLING: [Toasts, Error Boundary, Inline-Fehler, Offline]
+SCREENSHOTS: [Desktop + Mobile Screenshots bei Findings]
+EMPFEHLUNGEN: [Konkrete Verbesserungsvorschlaege]
+```
+
+### Wann UX/Mobile-Review PFLICHT ist
+- Jedes Feature mit UI-Aenderungen (neue Seiten, Formulare, Dialoge, Navigation)
+- Jede Aenderung an bestehender User-Interaktion
+- Session-Check: Bei jeder App mit Login
+- Error-Check: Bei jeder App mit Business-Logik oder DB
+
+### Wann UX/Mobile-Review OPTIONAL ist
+- Reine API-Aenderungen ohne UI (Error-Check trotzdem!)
+- Backend-only Features ohne Frontend-Auswirkung
+
 ## Test-Strategie
 
 ### Bei neuem Code
