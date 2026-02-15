@@ -16,6 +16,10 @@
 - Konsolidiere Prototyp-Erkenntnisse in MEMORY.md
 - Dokumentiere wiederverwendbare Patterns und Boilerplate-Templates
 
+### 4. Senior-Expert-Checks
+- **Prototyp-Lifecycle**: Prototypen die > 14 Tage alt sind als "Uebergangs-Kandidat" markieren
+- **Lock-File Integritaet**: package-lock.json/requirements.txt Hash validieren
+
 
 ## Fehlerbehandlung
 
