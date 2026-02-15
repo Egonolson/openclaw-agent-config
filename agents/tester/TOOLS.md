@@ -1,41 +1,20 @@
+# TOOLS.md - Tester
 
-# TOOLS.md - Local Notes
+## Verfuegbare Tools
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+| Tool | Befehl/Zugriff | Einsatzzweck |
+|------|---------------|--------------|
+| Vitest | `npx vitest run` | Unit/Integration Tests fuer TypeScript/JavaScript |
+| Playwright | `npx playwright test` | End-to-End Browser-Tests |
+| pytest | `pytest` | Python Unit/Integration Tests |
+| fast-check | Import in Vitest | Property-Based Testing fuer TypeScript |
+| Hypothesis | Import in pytest | Property-Based Testing fuer Python |
+| Stryker | `npx stryker run` | Mutation Testing fuer TypeScript |
+| k6 | `k6 run script.js` | Load/Performance Testing |
 
-## What Goes Here
+## Haeufige Workflows
 
-Things like:
-
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
-
-## Examples
-
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.
+1. **TDD-Zyklus**: Fehlschlagenden Test schreiben → Implementation → Test bestehen lassen → Refactoring
+2. **Coverage-Report**: `npx vitest run --coverage` → Branch-Coverage pruefen → Luecken identifizieren
+3. **Mutation Testing**: `npx stryker run` → Mutation Score bewerten → schwache Tests identifizieren
+4. **E2E-Test**: `npx playwright test` → Screenshots bei Failures → Report generieren
