@@ -83,6 +83,17 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 - Kann jeden anderen Agent per `@mention` einbinden
 - Hat Zugriff auf den geteilten Workspace unter `/shared-workspace`
 
+### Workspace-Dateien
+
+| Datei | Beschreibung |
+|-------|-------------|
+| [SOUL.md](agents/project-manager/SOUL.md) | Kern-Identitaet und Rolle |
+| [HEARTBEAT.md](agents/project-manager/HEARTBEAT.md) | Automatische Health-Checks pro Heartbeat-Zyklus |
+| [MEMORY.md](agents/project-manager/MEMORY.md) | Dauerhafte Pflicht-Reviews und Arbeitskonventionen |
+| [TOOLS.md](agents/project-manager/TOOLS.md) | Lokale Tool-Konfigurationen |
+| [IDENTITY.md](agents/project-manager/IDENTITY.md) | Agent-Identitaet und Persoenlichkeit |
+| [USER.md](agents/project-manager/USER.md) | User-Kontext und Praeferenzen |
+
 ### Was muss manuell konfiguriert werden?
 
 - Nichts — funktioniert out-of-the-box
@@ -149,6 +160,17 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 | `readOnlyRoot: false` | Beschreibbares Dateisystem | Fuer `apt-get install` etc. |
 | `extraHosts` | `host.docker.internal` | Zugriff auf Host-Services (localhost:3000/8000) |
 
+### Workspace-Dateien
+
+| Datei | Beschreibung |
+|-------|-------------|
+| [SOUL.md](agents/deploy/SOUL.md) | Kern-Identitaet und Rolle |
+| [HEARTBEAT.md](agents/deploy/HEARTBEAT.md) | Automatische Health-Checks pro Heartbeat-Zyklus |
+| [MEMORY.md](agents/deploy/MEMORY.md) | Dauerhafte Pflicht-Reviews und Arbeitskonventionen |
+| [TOOLS.md](agents/deploy/TOOLS.md) | Lokale Tool-Konfigurationen |
+| [IDENTITY.md](agents/deploy/IDENTITY.md) | Agent-Identitaet und Persoenlichkeit |
+| [USER.md](agents/deploy/USER.md) | User-Kontext und Praeferenzen |
+
 ### Was muss manuell konfiguriert werden?
 
 - **Docker-Image bauen:** `bash scripts/sandbox-deploy-setup.sh`
@@ -188,6 +210,17 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 }
 ```
 
+### Workspace-Dateien
+
+| Datei | Beschreibung |
+|-------|-------------|
+| [SOUL.md](agents/prototyper/SOUL.md) | Kern-Identitaet und Rolle |
+| [HEARTBEAT.md](agents/prototyper/HEARTBEAT.md) | Automatische Health-Checks pro Heartbeat-Zyklus |
+| [MEMORY.md](agents/prototyper/MEMORY.md) | Dauerhafte Pflicht-Reviews und Arbeitskonventionen |
+| [TOOLS.md](agents/prototyper/TOOLS.md) | Lokale Tool-Konfigurationen |
+| [IDENTITY.md](agents/prototyper/IDENTITY.md) | Agent-Identitaet und Persoenlichkeit |
+| [USER.md](agents/prototyper/USER.md) | User-Kontext und Praeferenzen |
+
 ### Was muss manuell konfiguriert werden?
 
 - Nichts — laeuft ohne Sandbox direkt im Gateway
@@ -226,6 +259,17 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 }
 ```
 
+### Workspace-Dateien
+
+| Datei | Beschreibung |
+|-------|-------------|
+| [SOUL.md](agents/production/SOUL.md) | Kern-Identitaet und Rolle |
+| [HEARTBEAT.md](agents/production/HEARTBEAT.md) | Automatische Health-Checks pro Heartbeat-Zyklus |
+| [MEMORY.md](agents/production/MEMORY.md) | Dauerhafte Pflicht-Reviews und Arbeitskonventionen |
+| [TOOLS.md](agents/production/TOOLS.md) | Lokale Tool-Konfigurationen |
+| [IDENTITY.md](agents/production/IDENTITY.md) | Agent-Identitaet und Persoenlichkeit |
+| [USER.md](agents/production/USER.md) | User-Kontext und Praeferenzen |
+
 ### Was muss manuell konfiguriert werden?
 
 - Nichts — laeuft ohne Sandbox direkt im Gateway
@@ -262,6 +306,17 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
   "skills": ["github", "healthcheck", "oracle", "session-logs"]
 }
 ```
+
+### Workspace-Dateien
+
+| Datei | Beschreibung |
+|-------|-------------|
+| [SOUL.md](agents/security-audit/SOUL.md) | Kern-Identitaet und Rolle |
+| [HEARTBEAT.md](agents/security-audit/HEARTBEAT.md) | Automatische Health-Checks pro Heartbeat-Zyklus |
+| [MEMORY.md](agents/security-audit/MEMORY.md) | Dauerhafte Pflicht-Reviews und Arbeitskonventionen |
+| [TOOLS.md](agents/security-audit/TOOLS.md) | Lokale Tool-Konfigurationen |
+| [IDENTITY.md](agents/security-audit/IDENTITY.md) | Agent-Identitaet und Persoenlichkeit |
+| [USER.md](agents/security-audit/USER.md) | User-Kontext und Praeferenzen |
 
 ### Was muss manuell konfiguriert werden?
 
@@ -301,6 +356,17 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 }
 ```
 
+### Workspace-Dateien
+
+| Datei | Beschreibung |
+|-------|-------------|
+| [SOUL.md](agents/code-audit/SOUL.md) | Kern-Identitaet und Rolle |
+| [HEARTBEAT.md](agents/code-audit/HEARTBEAT.md) | Automatische Health-Checks pro Heartbeat-Zyklus |
+| [MEMORY.md](agents/code-audit/MEMORY.md) | Dauerhafte Pflicht-Reviews und Arbeitskonventionen |
+| [TOOLS.md](agents/code-audit/TOOLS.md) | Lokale Tool-Konfigurationen |
+| [IDENTITY.md](agents/code-audit/IDENTITY.md) | Agent-Identitaet und Persoenlichkeit |
+| [USER.md](agents/code-audit/USER.md) | User-Kontext und Praeferenzen |
+
 ### Was muss manuell konfiguriert werden?
 
 - Nichts — laeuft ohne Sandbox direkt im Gateway
@@ -337,6 +403,17 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
   "skills": ["github", "oracle", "mcporter", "session-logs"]
 }
 ```
+
+### Workspace-Dateien
+
+| Datei | Beschreibung |
+|-------|-------------|
+| [SOUL.md](agents/architect/SOUL.md) | Kern-Identitaet und Rolle |
+| [HEARTBEAT.md](agents/architect/HEARTBEAT.md) | Automatische Health-Checks pro Heartbeat-Zyklus |
+| [MEMORY.md](agents/architect/MEMORY.md) | Dauerhafte Pflicht-Reviews und Arbeitskonventionen |
+| [TOOLS.md](agents/architect/TOOLS.md) | Lokale Tool-Konfigurationen |
+| [IDENTITY.md](agents/architect/IDENTITY.md) | Agent-Identitaet und Persoenlichkeit |
+| [USER.md](agents/architect/USER.md) | User-Kontext und Praeferenzen |
 
 ### Was muss manuell konfiguriert werden?
 
@@ -427,6 +504,17 @@ Die Datei `~/.openclaw/config/sandbox-tester/mcporter.json` wird per Bind-Mount 
 - **Context7**: Aktuelle Library-Dokumentation abrufen
 - **Playwright MCP**: Browser-Automation (navigate, click, fill, screenshot) — funktioniert nur hier, weil Chromium vorinstalliert ist
 
+### Workspace-Dateien
+
+| Datei | Beschreibung |
+|-------|-------------|
+| [SOUL.md](agents/tester/SOUL.md) | Kern-Identitaet und Rolle |
+| [HEARTBEAT.md](agents/tester/HEARTBEAT.md) | Automatische Health-Checks pro Heartbeat-Zyklus |
+| [MEMORY.md](agents/tester/MEMORY.md) | Dauerhafte Pflicht-Reviews und Arbeitskonventionen |
+| [TOOLS.md](agents/tester/TOOLS.md) | Lokale Tool-Konfigurationen |
+| [IDENTITY.md](agents/tester/IDENTITY.md) | Agent-Identitaet und Persoenlichkeit |
+| [USER.md](agents/tester/USER.md) | User-Kontext und Praeferenzen |
+
 ### Was muss manuell konfiguriert werden?
 
 - **Docker-Image bauen:** `bash scripts/sandbox-tester-setup.sh`
@@ -474,6 +562,17 @@ Die Datei `~/.openclaw/config/sandbox-tester/mcporter.json` wird per Bind-Mount 
 }
 ```
 
+### Workspace-Dateien
+
+| Datei | Beschreibung |
+|-------|-------------|
+| [SOUL.md](agents/designer/SOUL.md) | Kern-Identitaet und Rolle |
+| [HEARTBEAT.md](agents/designer/HEARTBEAT.md) | Automatische Health-Checks pro Heartbeat-Zyklus |
+| [MEMORY.md](agents/designer/MEMORY.md) | Dauerhafte Pflicht-Reviews und Arbeitskonventionen |
+| [TOOLS.md](agents/designer/TOOLS.md) | Lokale Tool-Konfigurationen |
+| [IDENTITY.md](agents/designer/IDENTITY.md) | Agent-Identitaet und Persoenlichkeit |
+| [USER.md](agents/designer/USER.md) | User-Kontext und Praeferenzen |
+
 ### Was muss manuell konfiguriert werden?
 
 - Workspace erstellen: `mkdir -p ~/.openclaw/workspaces/designer`
@@ -510,6 +609,17 @@ Die Datei `~/.openclaw/config/sandbox-tester/mcporter.json` wird per Bind-Mount 
   "skills": ["github", "tmux", "coding-agent", "session-logs", "mcporter"]
 }
 ```
+
+### Workspace-Dateien
+
+| Datei | Beschreibung |
+|-------|-------------|
+| [SOUL.md](agents/debugger/SOUL.md) | Kern-Identitaet und Rolle |
+| [HEARTBEAT.md](agents/debugger/HEARTBEAT.md) | Automatische Health-Checks pro Heartbeat-Zyklus |
+| [MEMORY.md](agents/debugger/MEMORY.md) | Dauerhafte Pflicht-Reviews und Arbeitskonventionen |
+| [TOOLS.md](agents/debugger/TOOLS.md) | Lokale Tool-Konfigurationen |
+| [IDENTITY.md](agents/debugger/IDENTITY.md) | Agent-Identitaet und Persoenlichkeit |
+| [USER.md](agents/debugger/USER.md) | User-Kontext und Praeferenzen |
 
 ### Was muss manuell konfiguriert werden?
 
