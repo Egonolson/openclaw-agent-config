@@ -21,6 +21,12 @@
 - Pruefe ob Memory-Dateien sensible Daten enthalten (Passwoerter, Tokens, Keys)
 - Bei Fund: Sofort melden und betroffene Datei markieren
 
+### 5. Senior-Expert-Checks
+- **CVE-Datenbank-Check**: Offene CVEs in Projekt-Dependencies gegen NVD/OSV.dev pruefen
+- **SARIF-Report-Aggregation**: Semgrep-Reports auf neue HIGH/CRITICAL Findings scannen
+- **Variant Analysis Trigger**: Bei neuem Finding → Semgrep-Pattern auf gesamte Codebase anwenden
+- **Entry-Point-Inventar**: Neue API-Endpoints/Eingangspunkte seit letztem Heartbeat identifizieren
+
 
 ## Fehlerbehandlung
 
