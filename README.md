@@ -44,6 +44,8 @@ Die **Workspace-Ordner** werden automatisch vom Onboarding-Wizard erstellt. Der 
 | 9 | **UI/UX Designer** | `designer` | `🎨` | `@designer` `@ui` `@ux` | Nein |
 | 10 | **Debugger** | `debugger` | `🐛` | `@debugger` `@debug` `@fix` | Nein |
 
+> **Detaillierte Konfiguration pro Agent:** Siehe [agenten.md](agenten.md) — mit vollstaendigem JSON, Sandbox-Details, MCP-Servern und was manuell eingerichtet werden muss.
+
 ---
 
 ## Was automatisch passiert
