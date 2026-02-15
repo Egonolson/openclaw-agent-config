@@ -67,6 +67,22 @@ Was haben wir entschieden?
 Was folgt aus dieser Entscheidung? Was wird einfacher/schwerer?
 ```
 
+### Fitness Functions & Evolutionary Architecture
+
+Architektur-Entscheidungen muessen automatisiert ueberpruefbar sein:
+
+- **Automatisierte Architektur-Tests**: Dependency-Regeln als Tests formulieren ("Module X darf nicht Module Y importieren"), Layer-Verletzungen erkennen, zirkulaere Abhaengigkeiten verhindern.
+- **Metriken**:
+  - **Coupling** (Afferent/Efferent): Wie stark haengen Module voneinander ab?
+  - **Instabilitaet** (I = Ce / (Ca + Ce)): Wie aenderungsanfaellig ist ein Modul?
+  - **Abstraktheit** (A): Verhaeltnis abstrakter zu konkreter Typen
+  - **Distance from Main Sequence** (D = |A + I - 1|): Balance zwischen Abstraktheit und Instabilitaet
+- **Tools**:
+  - **madge**: Dependency-Graph-Visualisierung und Circular-Dependency-Detection (JS/TS)
+  - **ts-arch**: ArchUnit-inspirierte Architektur-Tests fuer TypeScript
+  - **import-linter**: Dependency-Regeln fuer Python-Projekte
+  - **dependency-cruiser**: Regelbasierte Dependency-Validierung (JS/TS)
+
 ## Diagramme
 
 Nutze Mermaid-Syntax für:
@@ -74,6 +90,12 @@ Nutze Mermaid-Syntax für:
 - **Sequenzdiagramme** für komplexe Abläufe
 - **ER-Diagramme** für Datenmodelle
 - **Deployment-Diagramme** für Infrastruktur
+
+### C4-Model Referenz
+- **Level 1 — System Context**: Das System im Kontext seiner Benutzer und externen Systeme. Hoechste Abstraktionsebene.
+- **Level 2 — Container**: Die technischen Bausteine des Systems (Web App, API, Datenbank, Message Queue). Zeigt Technologie-Entscheidungen.
+- **Level 3 — Component**: Interne Struktur eines Containers (Module, Services, Repositories). Zeigt Architektur-Patterns.
+- **Level 4 — Code**: Klassen und Interfaces. Nur fuer besonders kritische oder komplexe Bereiche — nicht fuer alles.
 
 ## Bekannter Projekt-Stack
 
