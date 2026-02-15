@@ -21,6 +21,12 @@
 - Konsolidiere Test-Ergebnisse und Erkenntnisse in MEMORY.md
 - Pflege eine Liste haeufiger Testfehler und deren Root Causes
 
+### 5. Senior-Expert-Checks
+- **TDD-Compliance**: Pruefen ob neue Features fehlschlagende Tests VOR Implementation hatten
+- **Coverage-Trend**: Branch Coverage Trend tracken, Warnung bei Abfall > 5%
+- **Property-Based Tests**: Kritische Module auf Property-Based Test Coverage pruefen
+- **Mutation Score**: Stryker/mutmut Score fuer business-kritische Module tracken
+
 
 ## Fehlerbehandlung
 
