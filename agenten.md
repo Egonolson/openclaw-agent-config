@@ -1,6 +1,6 @@
 # Agenten-Konfiguration im Detail
 
-Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. Diese Datei beschreibt jeden Agent einzeln: Rolle, Konfiguration, Sandbox-Setup und Besonderheiten.
+Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. Diese Datei beschreibt jeden Agent einzeln: Rolle, Konfiguration, Sandbox-Setup, **Tool-Profile** und **Skill-Allowlists**.
 
 > Alle Pfade mit `/Users/YOUR_USER/` muessen durch deinen tatsaechlichen Home-Pfad ersetzt werden.
 
@@ -16,8 +16,28 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 6. [Code Reviewer](#6-code-reviewer) — Code-Qualitaet und Reviews
 7. [System Architect](#7-system-architect) — Architektur-Entscheidungen
 8. [QA & Test Engineer](#8-qa--test-engineer) — Tests mit Playwright-Sandbox
-9. [UI/UX Designer](#9-uiux-designer) — Interface-Design
+9. [UI/UX Designer](#9-uiux-designer) — Interface-Design (mit Tool-Profil)
 10. [Debugger](#10-debugger) — Fehlersuche und Troubleshooting
+11. [Tool-Profile-Referenz](#tool-profile-referenz) — Die 4 verfuegbaren Profile
+12. [Skill-Zuordnungs-Rationale](#skill-zuordnungs-rationale) — Warum welcher Agent welche Skills bekommt
+13. [Designer-Fix: EROFS-Problem und Loesung](#designer-fix-erofs-problem-und-loesung)
+
+---
+
+## Uebersicht: Agent-Tabelle
+
+| Agent | ID | Tool-Profil | Skills | Sandbox |
+|-------|----|-------------|--------|---------|
+| Project Manager | `project-manager` | `full` (Standard) | `github`, `trello`, `notion`, `slack`, `discord`, `session-logs`, `model-usage`, `clawhub` | Nein |
+| Deploy & Docker | `deploy` | `full` (Standard) | `github`, `tmux`, `healthcheck`, `mcporter`, `session-logs` | Ja |
+| Prototyper | `prototyper` | `full` (Standard) | `github`, `tmux`, `coding-agent`, `canvas`, `mcporter`, `session-logs` | Nein |
+| Production Engineer | `production` | `full` (Standard) | `github`, `tmux`, `coding-agent`, `oracle`, `mcporter`, `session-logs` | Nein |
+| Security Auditor | `security-audit` | `full` (Standard) | `github`, `healthcheck`, `oracle`, `session-logs` | Nein |
+| Code Reviewer | `code-audit` | `full` (Standard) | `github`, `oracle`, `session-logs` | Nein |
+| System Architect | `architect` | `full` (Standard) | `github`, `oracle`, `mcporter`, `session-logs` | Nein |
+| QA & Test Engineer | `tester` | `full` (Standard) | `github`, `tmux`, `coding-agent`, `mcporter`, `session-logs` | Ja |
+| **UI/UX Designer** | `designer` | **`minimal` + alsoAllow** | `nano-banana-pro`, `openai-image-gen`, `gifgrep`, `peekaboo`, `canvas`, `summarize`, `github` | **Ja (rw)** |
+| Debugger | `debugger` | `full` (Standard) | `github`, `tmux`, `coding-agent`, `session-logs`, `mcporter` | Nein |
 
 ---
 
@@ -32,6 +52,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 | Avatar | 📋 |
 | Mentions | `@pm` `@projektmanager` `@project-manager` |
 | Sandbox | Nein |
+| Tool-Profil | `full` (Standard — kein explizites Profil gesetzt) |
+| Skills | `github`, `trello`, `notion`, `slack`, `discord`, `session-logs`, `model-usage`, `clawhub` |
 | Besonderheit | `allowAgents: ["*"]` — darf alle anderen Agents als Sub-Agents aufrufen |
 
 ### Konfiguration
@@ -51,7 +73,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
   },
   "subagents": {
     "allowAgents": ["*"]
-  }
+  },
+  "skills": ["github", "trello", "notion", "slack", "discord", "session-logs", "model-usage", "clawhub"]
 }
 ```
 
@@ -78,6 +101,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 | Avatar | 🐳 |
 | Mentions | `@deploy` `@docker` |
 | Sandbox | **Ja** — `openclaw-sandbox-deploy:bookworm-slim` |
+| Tool-Profil | `full` (Standard) |
+| Skills | `github`, `tmux`, `healthcheck`, `mcporter`, `session-logs` |
 | Besonderheit | Docker-Socket gemountet, Root-Zugriff im Container |
 
 ### Konfiguration
@@ -94,6 +119,7 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
   "groupChat": {
     "mentionPatterns": ["@deploy", "@docker"]
   },
+  "skills": ["github", "tmux", "healthcheck", "mcporter", "session-logs"],
   "sandbox": {
     "mode": "all",
     "scope": "agent",
@@ -142,6 +168,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 | Avatar | ⚡ |
 | Mentions | `@prototyper` `@proto` `@prototype` |
 | Sandbox | Nein |
+| Tool-Profil | `full` (Standard) |
+| Skills | `github`, `tmux`, `coding-agent`, `canvas`, `mcporter`, `session-logs` |
 
 ### Konfiguration
 
@@ -156,7 +184,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
   },
   "groupChat": {
     "mentionPatterns": ["@prototyper", "@proto", "@prototype"]
-  }
+  },
+  "skills": ["github", "tmux", "coding-agent", "canvas", "mcporter", "session-logs"]
 }
 ```
 
@@ -177,6 +206,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 | Avatar | 🏭 |
 | Mentions | `@production` `@prod` |
 | Sandbox | Nein |
+| Tool-Profil | `full` (Standard) |
+| Skills | `github`, `tmux`, `coding-agent`, `oracle`, `mcporter`, `session-logs` |
 
 ### Konfiguration
 
@@ -191,7 +222,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
   },
   "groupChat": {
     "mentionPatterns": ["@production", "@prod"]
-  }
+  },
+  "skills": ["github", "tmux", "coding-agent", "oracle", "mcporter", "session-logs"]
 }
 ```
 
@@ -211,6 +243,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 | Avatar | 🔒 |
 | Mentions | `@security` `@security-audit` `@sicherheit` |
 | Sandbox | Nein |
+| Tool-Profil | `full` (Standard) |
+| Skills | `github`, `healthcheck`, `oracle`, `session-logs` |
 
 ### Konfiguration
 
@@ -225,7 +259,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
   },
   "groupChat": {
     "mentionPatterns": ["@security", "@security-audit", "@sicherheit"]
-  }
+  },
+  "skills": ["github", "healthcheck", "oracle", "session-logs"]
 }
 ```
 
@@ -246,6 +281,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 | Avatar | 🔍 |
 | Mentions | `@code-audit` `@code-review` `@review` |
 | Sandbox | Nein |
+| Tool-Profil | `full` (Standard) |
+| Skills | `github`, `oracle`, `session-logs` |
 
 ### Konfiguration
 
@@ -260,7 +297,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
   },
   "groupChat": {
     "mentionPatterns": ["@code-audit", "@code-review", "@review"]
-  }
+  },
+  "skills": ["github", "oracle", "session-logs"]
 }
 ```
 
@@ -280,6 +318,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 | Avatar | 🏗️ |
 | Mentions | `@architect` `@architektur` `@arch` |
 | Sandbox | Nein |
+| Tool-Profil | `full` (Standard) |
+| Skills | `github`, `oracle`, `mcporter`, `session-logs` |
 
 ### Konfiguration
 
@@ -294,7 +334,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
   },
   "groupChat": {
     "mentionPatterns": ["@architect", "@architektur", "@arch"]
-  }
+  },
+  "skills": ["github", "oracle", "mcporter", "session-logs"]
 }
 ```
 
@@ -314,6 +355,8 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
 | Avatar | 🧪 |
 | Mentions | `@tester` `@test` `@qa` |
 | Sandbox | **Ja** — `openclaw-sandbox-tester:noble` (Playwright) |
+| Tool-Profil | `full` (Standard) |
+| Skills | `github`, `tmux`, `coding-agent`, `mcporter`, `session-logs` |
 | Besonderheit | Chromium vorinstalliert, mcporter mit Playwright MCP |
 
 ### Konfiguration
@@ -330,6 +373,7 @@ Jeder Agent wird in `~/.openclaw/openclaw.json` unter `agents.list` definiert. D
   "groupChat": {
     "mentionPatterns": ["@tester", "@test", "@qa"]
   },
+  "skills": ["github", "tmux", "coding-agent", "mcporter", "session-logs"],
   "sandbox": {
     "mode": "all",
     "scope": "agent",
@@ -395,14 +439,17 @@ Die Datei `~/.openclaw/config/sandbox-tester/mcporter.json` wird per Bind-Mount 
 
 ## 9. UI/UX Designer
 
-**Rolle:** Interface-Design, Wireframes, Design-System, Barrierefreiheit.
+**Rolle:** Interface-Design, Wireframes, Design-System, Barrierefreiheit, Bildgenerierung.
 
 | Eigenschaft | Wert |
 |-------------|------|
 | ID | `designer` |
 | Avatar | 🎨 |
 | Mentions | `@designer` `@design` `@ui` `@ux` |
-| Sandbox | Nein |
+| Sandbox | **Ja** — `workspaceAccess: "rw"` |
+| Tool-Profil | **`minimal` + `alsoAllow`** (eingeschraenkt) |
+| Skills | `nano-banana-pro`, `openai-image-gen`, `gifgrep`, `peekaboo`, `canvas`, `summarize`, `github` |
+| Besonderheit | Kein `exec`-Tool, kein `cron`, kein `gateway` — nur Design-relevante Tools |
 
 ### Konfiguration
 
@@ -417,13 +464,51 @@ Die Datei `~/.openclaw/config/sandbox-tester/mcporter.json` wird per Bind-Mount 
   },
   "groupChat": {
     "mentionPatterns": ["@designer", "@design", "@ui", "@ux"]
+  },
+  "skills": ["nano-banana-pro", "openai-image-gen", "gifgrep", "peekaboo", "canvas", "summarize", "github"],
+  "tools": {
+    "profile": "minimal",
+    "alsoAllow": ["group:fs", "group:web", "image", "group:sessions"]
+  },
+  "sandbox": {
+    "workspaceAccess": "rw"
   }
 }
 ```
 
+### Tool-Profil erklaert
+
+Der Designer nutzt ein **eingeschraenktes Tool-Profil** statt des Standard-`full`-Profils:
+
+| Komponente | Tools | Erklaerung |
+|------------|-------|------------|
+| **Basis: `minimal`** | `session_status` | Nur Status-Abfrage |
+| **+ `group:fs`** | `read`, `write`, `edit`, `apply_patch` | Design-Plaene und -Dokumente erstellen |
+| **+ `group:web`** | `web_search`, `web_fetch` | Design-Recherche, Inspiration |
+| **+ `image`** | `image` | Bildgenerierung (DALL-E etc.) |
+| **+ `group:sessions`** | `sessions_list`, `sessions_history`, `sessions_send`, `sessions_spawn`, `session_status` | Subagent-Kommunikation |
+
+**Bewusst NICHT enthalten:**
+
+| Tool/Gruppe | Grund |
+|-------------|-------|
+| `exec` / `group:runtime` | Designer soll keinen Code ausfuehren |
+| `cron` / `group:automation` | Keine Automatisierungen noetig |
+| `gateway` | Kein Gateway-Zugriff noetig |
+| `message` / `group:messaging` | Kommunikation laeuft ueber Sessions |
+| `browser` / `canvas` (Tool) | Nicht verwechseln mit dem `canvas` Skill — das Tool ist fuer Browser-Automation |
+
+### Warum `alsoAllow` statt `allow`?
+
+`allow` **ersetzt** die Profil-Allowlist komplett. `alsoAllow` wird **additiv** gemerged:
+- Profil `minimal` liefert: `["session_status"]`
+- `alsoAllow` fuegt hinzu: `["group:fs", "group:web", "image", "group:sessions"]`
+- Ergebnis: Alle kombiniert, ohne `session_status` manuell wiederholen zu muessen
+
 ### Was muss manuell konfiguriert werden?
 
-- Nichts — laeuft ohne Sandbox direkt im Gateway
+- Workspace erstellen: `mkdir -p ~/.openclaw/workspaces/designer`
+- Die `tools` und `sandbox` Config ist bereits in `openclaw.json` definiert
 
 ---
 
@@ -437,6 +522,8 @@ Die Datei `~/.openclaw/config/sandbox-tester/mcporter.json` wird per Bind-Mount 
 | Avatar | 🐛 |
 | Mentions | `@debugger` `@debug` `@fix` |
 | Sandbox | Nein |
+| Tool-Profil | `full` (Standard) |
+| Skills | `github`, `tmux`, `coding-agent`, `session-logs`, `mcporter` |
 
 ### Konfiguration
 
@@ -451,7 +538,8 @@ Die Datei `~/.openclaw/config/sandbox-tester/mcporter.json` wird per Bind-Mount 
   },
   "groupChat": {
     "mentionPatterns": ["@debugger", "@debug", "@fix"]
-  }
+  },
+  "skills": ["github", "tmux", "coding-agent", "session-logs", "mcporter"]
 }
 ```
 
@@ -459,6 +547,137 @@ Die Datei `~/.openclaw/config/sandbox-tester/mcporter.json` wird per Bind-Mount 
 
 - Nichts — laeuft ohne Sandbox direkt im Gateway
 - Optional: Sandbox mit Debugging-Tools (strace, gdb, etc.) hinzufuegen
+
+---
+
+## Tool-Profile-Referenz
+
+OpenClaw definiert 4 Tool-Profile in `src/agents/tool-policy.ts`. Ein Profil bestimmt, welche nativen Tools ein Agent nutzen darf.
+
+### Die 4 Profile
+
+| Profil | Erlaubte Tools | Typischer Einsatz |
+|--------|---------------|-------------------|
+| **`minimal`** | `session_status` | Agents die fast nichts duerfen (Basis fuer Designer) |
+| **`coding`** | `group:fs`, `group:runtime`, `group:sessions`, `group:memory`, `image` | Coding-fokussierte Agents |
+| **`messaging`** | `message`, `sessions_list`, `sessions_history`, `sessions_send`, `session_status` | Reine Messaging-Agents |
+| **`full`** | Alle Tools (kein `allow`/`deny`) | Standard wenn kein Profil gesetzt — alle Agents ohne explizites Profil |
+
+### Tool-Gruppen
+
+| Gruppe | Enthaltene Tools |
+|--------|-----------------|
+| `group:memory` | `memory_search`, `memory_get` |
+| `group:web` | `web_search`, `web_fetch` |
+| `group:fs` | `read`, `write`, `edit`, `apply_patch` |
+| `group:runtime` | `exec`, `process` |
+| `group:sessions` | `sessions_list`, `sessions_history`, `sessions_send`, `sessions_spawn`, `session_status` |
+| `group:ui` | `browser`, `canvas` |
+| `group:automation` | `cron`, `gateway` |
+| `group:messaging` | `message` |
+| `group:nodes` | `nodes` |
+
+### Profil vs. Allow vs. AlsoAllow
+
+```
+tools.profile    → Basis-Allowlist (z.B. minimal = ["session_status"])
+tools.allow      → ERSETZT die Profil-Allowlist komplett
+tools.alsoAllow  → ERGAENZT die Profil-Allowlist additiv
+tools.deny       → Blockiert Tools explizit (hat Vorrang)
+```
+
+**Empfehlung:** Nutze `profile` + `alsoAllow` statt eine komplett eigene `allow`-Liste. So profitiert man von Profil-Updates ohne alles manuell nachziehen zu muessen.
+
+---
+
+## Skill-Zuordnungs-Rationale
+
+### Warum Skill-Allowlists?
+
+Ohne `skills`-Feld in der Agent-Config bekommt jeder Agent **alle** installierten Skills (49+). Das fuehrt zu:
+
+1. **Aufgeblaehte Kontexte:** Jeder Skill injiziert seine Beschreibung ins Kontextfenster — verschwendet Tokens
+2. **Verwirrung:** Ein Designer-Agent sieht Skills wie `coding-agent`, `healthcheck`, `deploy` — und versucht sie zu nutzen
+3. **Fehler:** EROFS-Fehler wenn ein Sandbox-Agent Tools nutzt die er nicht haben sollte
+
+### Zuordnungsprinzipien
+
+| Prinzip | Erklaerung |
+|---------|------------|
+| **Minimal noetig** | Jeder Agent bekommt nur Skills die zu seiner Rolle passen |
+| **`github` fuer alle** | Alle Agents brauchen GitHub-Zugriff fuer Repo-Operationen |
+| **`session-logs` fuer technische Agents** | Debugging und Monitoring brauchen Log-Zugriff |
+| **`tmux` fuer ausfuehrende Agents** | Agents die Code ausfuehren brauchen Terminal-Multiplexing |
+| **`coding-agent` selektiv** | Nur Agents die aktiv Code schreiben/debuggen |
+| **`oracle` fuer analytische Agents** | Agents die tiefgreifende Codebase-Analyse brauchen |
+| **`mcporter` fuer MCP-nutzende Agents** | Agents die MCP-Server konfigurieren/nutzen |
+
+### Detailzuordnung
+
+| Skill | Agents die ihn brauchen | Begruendung |
+|-------|------------------------|-------------|
+| `github` | Alle 10 | Repository-Zugriff ist universell noetig |
+| `tmux` | Deploy, Prototyper, Production, Tester, Debugger | Terminal-Sessions fuer Code-Ausfuehrung |
+| `coding-agent` | Prototyper, Production, Tester, Debugger | Aktives Code-Schreiben |
+| `oracle` | Architect, Code Reviewer, Security, Production | Tiefgehende Code-Analyse |
+| `mcporter` | Deploy, Prototyper, Production, Architect, Tester, Debugger | MCP-Server-Management |
+| `session-logs` | Alle technischen Agents (nicht Designer) | Debugging und Session-Monitoring |
+| `healthcheck` | Deploy, Security | Infrastruktur-Monitoring |
+| `canvas` | Prototyper, Designer | UI-Prototyping |
+| `slack`/`discord`/`trello`/`notion` | Nur PM | Projektmanagement-Kommunikation |
+| `nano-banana-pro`/`openai-image-gen` | Nur Designer | Bildgenerierung |
+| `gifgrep`/`peekaboo` | Nur Designer | Visuelle Assets |
+| `summarize` | Nur Designer | Zusammenfassungen fuer Design-Briefs |
+| `model-usage`/`clawhub` | Nur PM | Kosten-/Nutzungsmonitoring |
+
+### Konfigurationsformat
+
+```typescript
+// In types.agents.ts
+skills?: string[];  // omit = all skills; empty [] = none; array = allowlist
+```
+
+---
+
+## Designer-Fix: EROFS-Problem und Loesung
+
+### Problem
+
+Der Designer-Agent lief zuvor mit dem Standard-Toolset (`full` Profil = alle Tools) und ohne Sandbox-Config. Wenn er in einer Sandbox ausgefuehrt wurde:
+
+1. Er versuchte `exec` zu nutzen (z.B. `npm install`, `node script.js`)
+2. Das Root-Dateisystem der Sandbox war read-only (`readOnlyRoot: true` Standard)
+3. Ergebnis: **EROFS (Read-Only File System)** Fehler
+
+### Ursache
+
+- Kein `tools`-Block definiert → Agent bekommt `full` Profil → alle Tools inkl. `exec`
+- Kein `sandbox.workspaceAccess` → Standard `"none"` → kein Schreibzugriff im Workspace
+- Keine `skills`-Allowlist → Agent sieht `coding-agent`, `deploy`-Skills → wird zum "Schreiben" animiert
+
+### Loesung
+
+```json
+{
+  "tools": {
+    "profile": "minimal",
+    "alsoAllow": ["group:fs", "group:web", "image", "group:sessions"]
+  },
+  "sandbox": {
+    "workspaceAccess": "rw"
+  },
+  "skills": ["nano-banana-pro", "openai-image-gen", "gifgrep", "peekaboo", "canvas", "summarize", "github"]
+}
+```
+
+**Was sich aendert:**
+
+| Vorher | Nachher |
+|--------|---------|
+| Alle 49+ Skills sichtbar | 7 Design-relevante Skills |
+| Alle Tools verfuegbar (inkl. `exec`) | Nur `session_status` + fs/web/image/sessions |
+| Kein Workspace-Schreibzugriff | `workspaceAccess: "rw"` — kann Design-Plaene speichern |
+| EROFS bei Schreibversuchen | Schreibt nur in Workspace, kein `exec` verfuegbar |
 
 ---
 
@@ -476,7 +695,6 @@ Diese Agents brauchen nur ihren Eintrag in `openclaw.json` und einen Workspace-O
 | Security Auditor | `mkdir -p ~/.openclaw/workspaces/security-audit` |
 | Code Reviewer | `mkdir -p ~/.openclaw/workspaces/code-audit` |
 | Architect | `mkdir -p ~/.openclaw/workspaces/architect` |
-| Designer | `mkdir -p ~/.openclaw/workspaces/designer` |
 | Debugger | `mkdir -p ~/.openclaw/workspaces/debugger` |
 
 ### Agents MIT Sandbox (eigener Docker-Container)
@@ -487,6 +705,7 @@ Diese Agents brauchen zusaetzlich ein Docker-Image und ggf. Config-Dateien:
 |-------|-------|-------------|--------------|
 | Deploy | `openclaw-sandbox-deploy:bookworm-slim` | `bash scripts/sandbox-deploy-setup.sh` | Docker-Socket-Pfad anpassen |
 | Tester | `openclaw-sandbox-tester:noble` | `bash scripts/sandbox-tester-setup.sh` | `config/sandbox-tester/mcporter.json` erstellen |
+| Designer | Kein eigenes Image | — | `tools` + `sandbox.workspaceAccess` in `openclaw.json` |
 
 ### Checkliste: Neuen Sandbox-Agent einrichten
 
