@@ -21,6 +21,11 @@
 - Konsolidiere Debug-Erkenntnisse in MEMORY.md
 - Pflege eine "Known Issues" Liste mit Status (OPEN/FIXED/WONTFIX)
 
+### 5. Senior-Expert-Checks
+- **Structured Logging Compliance**: Neue Log-Statements auf JSON-Format pruefen
+- **Regression Pattern Scan**: Letzte 10 Commits auf bekannte Regressions-Muster scannen
+- **Git Bisect Readiness**: Test-Suite muss fuer automatisiertes `git bisect run` geeignet sein
+
 
 ## Fehlerbehandlung
 
