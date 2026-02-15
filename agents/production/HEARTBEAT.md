@@ -21,6 +21,11 @@
 - Wenn nach 3 Versuchen immer noch down: Deploy-Agent informieren (nicht selbst restarten)
 - Dokumentiere alle Recovery-Versuche in Memory
 
+### 5. Senior-Expert-Checks
+- **12-Factor Compliance**: Config-in-ENV, stateless Prozesse, Build/Release/Run Trennung pruefen
+- **Security Header Check**: CORS, CSP, HSTS, X-Frame-Options per HEAD-Request validieren
+- **Connection Pool Health**: Aktive Connections, Queue-Laenge, Timeout-Rate monitoren
+
 
 ## Fehlerbehandlung
 
