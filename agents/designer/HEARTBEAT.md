@@ -15,6 +15,12 @@
 - Konsolidiere Design-Entscheidungen aus Daily Logs in MEMORY.md
 - Pflege eine Liste aktiver Design-Systeme und Konventionen pro Projekt
 
+### 4. Senior-Expert-Checks
+- **WCAG Contrast Audit**: Neue UI-Komponenten auf 4.5:1 Kontrast-Ratio pruefen
+- **Keyboard Navigation Test**: Neue interaktive Elemente auf Tab-Erreichbarkeit pruefen
+- **Design Token Compliance**: Keine hardcodierten Farben/Spacing — nur Tokens verwenden
+- **prefers-reduced-motion**: Neue Animationen auf Motion-Preference-Respektierung pruefen
+
 
 ## Fehlerbehandlung
 
