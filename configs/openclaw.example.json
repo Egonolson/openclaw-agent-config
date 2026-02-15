@@ -1,0 +1,223 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.2.9"
+  },
+  "auth": {
+    "profiles": {
+      "anthropic:openclaw": {
+        "provider": "anthropic",
+        "mode": "token"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "/home/node/.openclaw/workspace",
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "1h"
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "heartbeat": {
+        "every": "1h"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    },
+    "list": [
+      {
+        "id": "project-manager",
+        "default": true,
+        "name": "Project Manager",
+        "workspace": "/Users/YOUR_USER/.openclaw/workspaces/project-manager",
+        "identity": {
+          "name": "PM",
+          "avatar": "📋"
+        },
+        "groupChat": {
+          "mentionPatterns": ["@pm", "@projektmanager", "@project-manager"]
+        },
+        "subagents": {
+          "allowAgents": ["*"]
+        }
+      },
+      {
+        "id": "deploy",
+        "name": "Deploy & Docker",
+        "workspace": "/Users/YOUR_USER/.openclaw/workspaces/deploy",
+        "identity": {
+          "name": "Deploy",
+          "avatar": "🐳"
+        },
+        "groupChat": {
+          "mentionPatterns": ["@deploy", "@docker"]
+        },
+        "sandbox": {
+          "mode": "all",
+          "scope": "agent",
+          "workspaceAccess": "rw",
+          "docker": {
+            "image": "openclaw-sandbox-deploy:bookworm-slim",
+            "network": "bridge",
+            "extraHosts": ["host.docker.internal:host-gateway"],
+            "binds": [
+              "/Users/YOUR_USER/.docker/run/docker.sock:/var/run/docker.sock:rw",
+              "/Users/YOUR_USER/.openclaw/workspaces:/workspaces:rw",
+              "/Users/YOUR_USER/.openclaw/workspace:/shared-workspace:rw"
+            ],
+            "readOnlyRoot": false,
+            "user": "0:0"
+          }
+        }
+      },
+      {
+        "id": "prototyper",
+        "name": "Prototyper",
+        "workspace": "/Users/YOUR_USER/.openclaw/workspaces/prototyper",
+        "identity": {
+          "name": "Prototyper",
+          "avatar": "⚡"
+        },
+        "groupChat": {
+          "mentionPatterns": ["@prototyper", "@proto", "@prototype"]
+        }
+      },
+      {
+        "id": "production",
+        "name": "Production Engineer",
+        "workspace": "/Users/YOUR_USER/.openclaw/workspaces/production",
+        "identity": {
+          "name": "Production",
+          "avatar": "🏭"
+        },
+        "groupChat": {
+          "mentionPatterns": ["@production", "@prod"]
+        }
+      },
+      {
+        "id": "security-audit",
+        "name": "Security Auditor",
+        "workspace": "/Users/YOUR_USER/.openclaw/workspaces/security-audit",
+        "identity": {
+          "name": "Security",
+          "avatar": "🔒"
+        },
+        "groupChat": {
+          "mentionPatterns": ["@security", "@security-audit"]
+        }
+      },
+      {
+        "id": "code-audit",
+        "name": "Code Reviewer",
+        "workspace": "/Users/YOUR_USER/.openclaw/workspaces/code-audit",
+        "identity": {
+          "name": "Code Audit",
+          "avatar": "🔍"
+        },
+        "groupChat": {
+          "mentionPatterns": ["@code-audit", "@code-review", "@review"]
+        }
+      },
+      {
+        "id": "architect",
+        "name": "System Architect",
+        "workspace": "/Users/YOUR_USER/.openclaw/workspaces/architect",
+        "identity": {
+          "name": "Architect",
+          "avatar": "🏗️"
+        },
+        "groupChat": {
+          "mentionPatterns": ["@architect", "@arch"]
+        }
+      },
+      {
+        "id": "tester",
+        "name": "QA & Test Engineer",
+        "workspace": "/Users/YOUR_USER/.openclaw/workspaces/tester",
+        "identity": {
+          "name": "Tester",
+          "avatar": "🧪"
+        },
+        "groupChat": {
+          "mentionPatterns": ["@tester", "@test", "@qa"]
+        },
+        "sandbox": {
+          "mode": "all",
+          "scope": "agent",
+          "workspaceAccess": "rw",
+          "docker": {
+            "image": "openclaw-sandbox-tester:noble",
+            "network": "bridge",
+            "extraHosts": ["host.docker.internal:host-gateway"],
+            "binds": [
+              "/Users/YOUR_USER/.openclaw/workspaces:/workspaces:rw",
+              "/Users/YOUR_USER/.openclaw/workspace:/shared-workspace:rw",
+              "/Users/YOUR_USER/.openclaw/config/sandbox-tester/mcporter.json:/home/pwuser/config/mcporter.json:ro"
+            ],
+            "readOnlyRoot": false,
+            "user": "0:0"
+          }
+        }
+      },
+      {
+        "id": "designer",
+        "name": "UI/UX Designer",
+        "workspace": "/Users/YOUR_USER/.openclaw/workspaces/designer",
+        "identity": {
+          "name": "Designer",
+          "avatar": "🎨"
+        },
+        "groupChat": {
+          "mentionPatterns": ["@designer", "@design", "@ui", "@ux"]
+        }
+      },
+      {
+        "id": "debugger",
+        "name": "Debugger & Troubleshooter",
+        "workspace": "/Users/YOUR_USER/.openclaw/workspaces/debugger",
+        "identity": {
+          "name": "Debugger",
+          "avatar": "🐛"
+        },
+        "groupChat": {
+          "mentionPatterns": ["@debugger", "@debug", "@fix"]
+        }
+      }
+    ]
+  },
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto"
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "session-memory": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "REPLACE_WITH_YOUR_TOKEN"
+    }
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "npm"
+    }
+  }
+}

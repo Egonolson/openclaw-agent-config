@@ -1,0 +1,30 @@
+FROM mcr.microsoft.com/playwright:v1.50.0-noble
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    bash \
+    ca-certificates \
+    curl \
+    git \
+    jq \
+    python3 \
+    ripgrep \
+  && rm -rf /var/lib/apt/lists/*
+
+# Playwright browsers are pre-installed in the base image
+# Node.js is also included
+
+# Install mcporter for MCP server management
+RUN npm install -g mcporter
+
+RUN useradd --create-home --shell /bin/bash sandbox || true
+
+# Ensure npm cache dir exists for npx-based MCP servers
+RUN mkdir -p /home/pwuser/.npm && chown pwuser:pwuser /home/pwuser/.npm
+
+USER pwuser
+WORKDIR /home/pwuser
+
+CMD ["sleep", "infinity"]
