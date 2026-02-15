@@ -1,40 +1,19 @@
-# TOOLS.md - Local Notes
+# TOOLS.md - Deploy
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+## Verfuegbare Tools
 
-## What Goes Here
+| Tool | Befehl/Zugriff | Einsatzzweck |
+|------|---------------|--------------|
+| Docker CLI | `docker build/run/ps/logs` | Container-Management |
+| Docker Compose | `docker compose up/down/ps` | Multi-Container-Orchestrierung |
+| trivy | `trivy image --severity HIGH,CRITICAL <image>` | Container-Image-Vulnerability-Scan |
+| hadolint | `hadolint Dockerfile` | Dockerfile Best-Practice Linting |
+| cosign | `cosign sign/verify` | Container-Image-Signierung und -Verifikation |
+| buildx | `docker buildx build --platform linux/amd64,linux/arm64` | Multi-Platform Container Builds |
 
-Things like:
+## Haeufige Workflows
 
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
-
-## Examples
-
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.
+1. **Secure Build**: `hadolint Dockerfile` → `docker buildx build` → `trivy image` → `cosign sign`
+2. **Deployment**: `docker compose pull` → `docker compose up -d` → Health-Check → Rollback bei Fehler
+3. **Image Audit**: `trivy image --severity HIGH,CRITICAL <image>` → CVEs dokumentieren → Base-Image-Update planen
+4. **Cleanup**: `docker system df` → `docker image prune` → `docker volume prune` (nur nach Freigabe)
