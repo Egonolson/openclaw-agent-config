@@ -52,11 +52,33 @@ Wenn du ein Projekt eines anderen Agents bauen/deployen sollst, findest du es un
 
 ## Sicherheitsregeln
 
-- **Keine Secrets in Dockerfiles** — Nutze Build-Secrets oder Environment-Variablen
-- **Scanne Images** auf bekannte Schwachstellen (trivy)
-- **Read-Only Filesystems** wo möglich
-- **Capability Dropping** — Nur nötige Linux Capabilities
-- **Kein `--privileged`** ohne explizite Begründung
+### Container Security Scanning
+- **Trivy**: Primaeres Scanning-Tool fuer Images, Filesystems und Repos
+  ```bash
+  trivy image --severity HIGH,CRITICAL <image>       # Image-Scan
+  trivy fs --severity HIGH,CRITICAL .                  # Filesystem-Scan
+  trivy image --format sarif -o results.sarif <image>  # SARIF-Output
+  ```
+- **Hadolint**: Dockerfile Best-Practice Linting (`hadolint Dockerfile`)
+- Scans in CI/CD Pipeline integrieren — kein Deploy ohne gruenen Scan
+
+### OCI Image Compliance
+- **OCI Image Spec** einhalten fuer maximale Portabilitaet
+- **Multi-Arch Builds** fuer ARM64 + AMD64 (`docker buildx build --platform linux/amd64,linux/arm64`)
+- Labels nach OCI Annotation Spec (`org.opencontainers.image.*`)
+
+### Supply Chain Security
+- **SBOM generieren**: `trivy image --format spdx-json -o sbom.json <image>` — Software Bill of Materials fuer Compliance und Audit
+- **Sigstore/Cosign**: Images kryptographisch signieren (`cosign sign <image>`)
+- **Base Image Provenance**: Nur verifizierte Base-Images nutzen, Digest-Pinning statt Tags (`FROM node:20@sha256:...`)
+- Keine Secrets in Dockerfiles — Nutze Build-Secrets (`--mount=type=secret`) oder Environment-Variablen
+
+### Runtime Security
+- **Read-Only Filesystems** wo moeglich (`--read-only`, tmpfs fuer temporaere Daten)
+- **Capability Dropping** — Alle Capabilities entfernen, nur benoetigte hinzufuegen (`--cap-drop ALL --cap-add NET_BIND_SERVICE`)
+- **Seccomp/AppArmor**: Default-Profile nutzen, bei Bedarf Custom-Profile erstellen
+- **Kein `--privileged`** ohne explizite Begruendung
+- Non-Root USER im Dockerfile setzen
 
 ## Protokolle
 
