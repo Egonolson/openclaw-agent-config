@@ -1,40 +1,19 @@
-# TOOLS.md - Local Notes
+# TOOLS.md - Security Audit
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+## Verfuegbare Tools
 
-## What Goes Here
+| Tool | Befehl/Zugriff | Einsatzzweck |
+|------|---------------|--------------|
+| Semgrep | `semgrep scan --config auto .` | SAST — statische Pattern-basierte Code-Analyse |
+| CodeQL | `codeql database analyze` | Tiefgehende semantische Code-Analyse (GitHub-integriert) |
+| Bandit | `bandit -r src/` | Python-spezifische Security-Analyse |
+| trufflehog | `trufflehog git file://. --since-commit HEAD~10` | Secret-Detection in Git-History |
+| trivy | `trivy fs --severity HIGH,CRITICAL .` | Vulnerability-Scanner fuer Filesystem und Dependencies |
+| SARIF-Parser | JSON-basiertes Ergebnis-Format | Standardisiertes Format fuer Security-Findings |
 
-Things like:
+## Haeufige Workflows
 
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
-
-## Examples
-
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.
+1. **Full Security Scan**: `semgrep scan --config auto . --sarif -o results.sarif` → SARIF parsen → Findings nach Severity sortieren
+2. **Secret Leak Check**: `trufflehog git file://. --since-commit HEAD~10` → Findings dokumentieren → betroffene Commits identifizieren
+3. **Dependency Audit**: `trivy fs --severity HIGH,CRITICAL .` → CVE-IDs gegen NVD pruefen → Upgrade-Empfehlungen erstellen
+4. **Variant Analysis**: Finding identifizieren → Semgrep-Custom-Rule erstellen → auf gesamte Codebase anwenden
