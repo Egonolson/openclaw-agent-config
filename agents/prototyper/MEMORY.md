@@ -13,7 +13,46 @@
 - Docker Compose: `$` als `$$` escapen
 
 ## Wiederverwendbare Patterns
-_(Templates und Boilerplate — gepflegt durch Heartbeat)_
+### Vite + React + Supabase Starter
+```bash
+npm create vite@latest app -- --template react-ts
+cd app && npm install
+npx shadcn@latest init
+npm install @supabase/supabase-js
+# .env: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
+```
+Basis fuer die meisten Frontend-Prototypen. shadcn/ui + Tailwind sind Standard.
+
+### FastAPI + SQLite Quick-Setup
+```bash
+pip install fastapi uvicorn aiosqlite
+# main.py: FastAPI() + SQLite via aiosqlite
+# uvicorn main:app --reload --port 8000
+```
+Fuer schnelle API-Prototypen ohne externe DB-Abhaengigkeit.
+
+### Express + Tailwind Minimal
+```bash
+npm init -y && npm install express
+npm create vite@latest frontend -- --template react-ts
+cd frontend && npx shadcn@latest init
+# Express als API-Proxy, Vite-Frontend als Static Build
+```
+Fuer Full-Stack-Prototypen die spaeter in Docker landen.
+
+### Docker Compose Skeleton
+```yaml
+services:
+  app:
+    build: .
+    ports: ["3000:3000"]
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+```
+Standard-Template fuer Deploy-Agent-Uebergabe.
 
 ## Aktive Prototypen
 _(Status und Links — gepflegt durch Heartbeat)_
