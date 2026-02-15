@@ -1,41 +1,19 @@
+# TOOLS.md - Prototyper
 
-# TOOLS.md - Local Notes
+## Verfuegbare Tools
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+| Tool | Befehl/Zugriff | Einsatzzweck |
+|------|---------------|--------------|
+| Vite | `npm create vite@latest` | Schnelles Frontend-Scaffolding |
+| Express | `npm init && npm i express` | Minimaler Node.js HTTP-Server |
+| FastAPI | `pip install fastapi uvicorn` | Schnelles Python API-Scaffolding |
+| SQLite | `import Database from 'better-sqlite3'` | Eingebettete Datenbank fuer Prototypen |
+| npm create | `npm create vite@latest / astro@latest` | Projekt-Scaffolding mit Templates |
+| Supabase | `npx supabase init` | Backend-as-a-Service Setup |
 
-## What Goes Here
+## Haeufige Workflows
 
-Things like:
-
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
-
-## Examples
-
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.
+1. **React Prototyp**: `npm create vite@latest app -- --template react-ts` → shadcn/ui + Tailwind einrichten → Feature bauen
+2. **API Prototyp**: `pip install fastapi uvicorn` → Endpoints definieren → SQLite anbinden → testen
+3. **Full-Stack Quick**: Vite Frontend + Express/FastAPI Backend + SQLite → Docker Compose erstellen → Deploy-Agent uebergeben
+4. **Supabase Prototyp**: `npx supabase init` → Schema definieren → Auth einrichten → Frontend anbinden
