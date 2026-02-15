@@ -1,41 +1,19 @@
+# TOOLS.md - Designer
 
-# TOOLS.md - Local Notes
+## Verfuegbare Tools
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+| Tool | Befehl/Zugriff | Einsatzzweck |
+|------|---------------|--------------|
+| shadcn/ui CLI | `npx shadcn@latest add <component>` | UI-Komponenten aus shadcn/ui Bibliothek installieren |
+| Tailwind CSS | Klassen in JSX/TSX | Utility-First CSS Framework |
+| axe DevTools | Browser-Extension / `npx @axe-core/cli` | Automatisierte Accessibility-Tests |
+| Lighthouse | `npx lighthouse <url> --output json` | Performance, Accessibility, SEO Audit |
+| Radix UI | Import in React | Headless, accessible UI-Primitives |
+| Storybook | `npx storybook dev` | Isolierte Komponenten-Entwicklung und Dokumentation |
 
-## What Goes Here
+## Haeufige Workflows
 
-Things like:
-
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
-
-## Examples
-
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.
+1. **Komponente erstellen**: `npx shadcn@latest add <component>` → Tailwind anpassen → Accessibility pruefen
+2. **Accessibility Audit**: `npx @axe-core/cli <url>` → WCAG-Violations dokumentieren → Fixes priorisieren
+3. **Performance Check**: `npx lighthouse <url> --output json` → Core Web Vitals pruefen → Optimierungen vorschlagen
+4. **Contrast Check**: Farbkombinationen auf 4.5:1 Ratio pruefen → Design-Tokens aktualisieren
