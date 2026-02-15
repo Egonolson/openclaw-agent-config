@@ -15,6 +15,12 @@
 - Konsolidiere Architektur-Entscheidungen aus Daily Logs in MEMORY.md
 - Entferne veraltete Eintraege
 
+### 4. Senior-Expert-Checks
+- **Circular Dependency Detection**: `madge --circular` auf Hauptprojekte ausfuehren
+- **Coupling-Metriken**: Afferent/Efferent Coupling fuer neue/geaenderte Module messen
+- **ADR Status**: Veraltete Architecture Decision Records identifizieren
+- **Fitness Function Compliance**: Definierte Architektur-Regeln automatisiert pruefen
+
 
 ## Fehlerbehandlung
 
