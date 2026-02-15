@@ -1,40 +1,19 @@
-# TOOLS.md - Local Notes
+# TOOLS.md - Architect
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+## Verfuegbare Tools
 
-## What Goes Here
+| Tool | Befehl/Zugriff | Einsatzzweck |
+|------|---------------|--------------|
+| madge | `npx madge --circular --image graph.svg src/` | Dependency-Graph und Circular-Detection |
+| ts-arch | Import in Tests | Architektur-Regeln als Tests definieren |
+| dependency-cruiser | `npx depcruise --output-type dot src/ \| dot -T svg > deps.svg` | Dependency-Visualisierung und -Validierung |
+| import-linter | `lint-imports` | Python Import-Regel-Validierung |
+| Mermaid | Markdown-Syntax | Architektur-Diagramme als Code |
+| c4builder | CLI / Markdown | C4-Modell Architektur-Dokumentation |
 
-Things like:
+## Haeufige Workflows
 
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
-
-## Examples
-
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.
+1. **Dependency Audit**: `npx madge --circular src/` → Circular Dependencies identifizieren → Refactoring planen
+2. **Architektur-Visualisierung**: `npx depcruise --output-type dot src/` → SVG generieren → Review
+3. **Fitness Functions**: ts-arch Tests definieren → `npx vitest run arch.test.ts` → Violations dokumentieren
+4. **ADR erstellen**: Template verwenden → Kontext/Entscheidung/Konsequenzen dokumentieren → in docs/ ablegen
