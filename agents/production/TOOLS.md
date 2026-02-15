@@ -1,40 +1,20 @@
-# TOOLS.md - Local Notes
+# TOOLS.md - Production
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+## Verfuegbare Tools
 
-## What Goes Here
+| Tool | Befehl/Zugriff | Einsatzzweck |
+|------|---------------|--------------|
+| uv | `uv pip install/sync` | Schneller Python Package Manager |
+| ruff | `ruff check .` | Python Linting (extrem schnell) |
+| ty | `ty check .` | Python Type-Checking |
+| npm/node | `npm run build/start` | Node.js Package Management und Runtime |
+| Zod | Import in TypeScript | Runtime Schema-Validierung (TypeScript) |
+| Pydantic | Import in Python | Runtime Schema-Validierung (Python) |
+| curl | `curl -s http://host:port/health` | Health-Check Endpoints pruefen |
 
-Things like:
+## Haeufige Workflows
 
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
-
-## Examples
-
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.
+1. **Health-Check**: `curl -s http://<host>:<port>/health` → Status-Code + Response-Time loggen → Baseline vergleichen
+2. **Python Quality**: `ruff check .` → `ty check .` → Findings dokumentieren
+3. **Security Headers**: `curl -sI https://<host>` → CORS, CSP, HSTS, X-Frame-Options validieren
+4. **Dependency Update**: `uv pip compile requirements.in` → `uv pip sync requirements.txt` → Tests laufen lassen
