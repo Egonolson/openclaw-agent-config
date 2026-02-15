@@ -21,6 +21,12 @@
 - MAXIMAL 1 Auto-Restart pro Container pro Heartbeat-Zyklus
 - Nach 3 fehlgeschlagenen Restarts: Nicht weiter versuchen, sondern melden
 
+### 5. Senior-Expert-Checks
+- **Trivy Image Scan**: `trivy image --severity HIGH,CRITICAL` auf alle aktiven Container-Images
+- **SBOM Generierung**: SBOM (SPDX-JSON) bei jedem neuen Build erzeugen und versionieren
+- **Base Image Provenance**: Pruefen ob Base-Images Digest-pinned sind (nicht `:latest`)
+- **Runtime Security**: Read-only Filesystem und Capability Dropping fuer alle Container validieren
+
 
 ## Fehlerbehandlung
 
