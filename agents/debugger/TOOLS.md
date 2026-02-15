@@ -1,41 +1,19 @@
+# TOOLS.md - Debugger
 
-# TOOLS.md - Local Notes
+## Verfuegbare Tools
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+| Tool | Befehl/Zugriff | Einsatzzweck |
+|------|---------------|--------------|
+| Git Bisect | `git bisect start/bad/good/run` | Automatisierte Regression-Suche |
+| Docker Logs | `docker logs --tail 100 <container>` | Container-Log-Analyse |
+| Docker Inspect | `docker inspect <container>` | Container-Konfiguration pruefen |
+| OpenTelemetry | Trace-Analyse via Jaeger/Zipkin | Distributed Tracing und Performance-Analyse |
+| jq | `cat log.json \| jq '.level == "error"'` | Strukturierte Log-Filterung |
+| Node Inspector | `node --inspect` | JavaScript/TypeScript Debugging |
 
-## What Goes Here
+## Haeufige Workflows
 
-Things like:
-
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
-
-## Examples
-
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.
+1. **Regression Hunt**: `git bisect start` → `git bisect bad HEAD` → `git bisect good <commit>` → `git bisect run <test>`
+2. **Container Debug**: `docker logs --tail 100 <name>` → Fehler-Pattern identifizieren → `docker inspect` fuer Config
+3. **Log-Analyse**: Logs in JSON extrahieren → `jq` Filter fuer Error-Patterns → Root Cause identifizieren
+4. **Performance Debug**: OpenTelemetry Traces analysieren → Bottleneck identifizieren → Fix vorschlagen
